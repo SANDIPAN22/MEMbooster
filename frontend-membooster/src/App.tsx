@@ -6,6 +6,8 @@ const SignIn = lazy(()=> import('./pages/SignIn'))
 const Dashboard = lazy(()=> import('./pages/Dashboard'))
 const NewNote = lazy(()=> import('./pages/NewNote'))
 import Loader from './components/Loader'
+import ShowTask from './pages/ShowTask'
+import EditTask from './pages/EditTask'
 
 const App = () => {
   return (
@@ -15,6 +17,10 @@ const App = () => {
           <Route path='/login' element={<Login/>}> </Route>
           <Route path='/signin' element={<SignIn/>}></Route>
           <Route path= '/' element={<Dashboard/>}></Route>
+          <Route path='/:id'>
+            <Route index element={<ShowTask/>}/>
+            <Route path='edit' element={<EditTask/>}/>
+          </Route>
           <Route path='/new' element={<NewNote/>}></Route>
           <Route path='*' element={<Navigate to="/"/>}></Route>
         </Routes>
