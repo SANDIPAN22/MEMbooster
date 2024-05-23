@@ -1,8 +1,15 @@
 import React from 'react'
+import MyContainer from '../components/MyContainer'
+import { Typography } from '@mui/material'
 
 const Dashboard = () => {
   return (
-    <div>Dashboard</div>
+    <MyContainer>
+        <Typography variant='h2' >
+          Notes
+        </Typography>
+
+    </MyContainer>
   )
 }
 
