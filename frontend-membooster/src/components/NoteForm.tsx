@@ -24,6 +24,9 @@ const NoteForm = ({saveNote}: NoteFormProps) => {
       }
       
       saveNote(currentNoteData)
+      TitleRef.current!.value = ""
+      TagsRef.current!.value = ""
+      MarkDownRef.current!.value = ""
    }
   return (
     <>

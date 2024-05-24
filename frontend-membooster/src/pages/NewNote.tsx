@@ -5,11 +5,12 @@ import MyBreadcrumbs from '../components/MyBreadcrumbs'
 import NoteForm from '../components/NoteForm'
 import useLocalStorage from '../shared/useLocalStorage'
 import {NoteDataType} from '../shared/commonTypes'
+import {useNavigate} from 'react-router-dom'
 
 const NewNote = () => {
   const blank_notes : NoteDataType[] = []
   const [notes, setNotes] = useLocalStorage('notes', blank_notes)
-  
+  const navigate = useNavigate()
   const saveNote= (currNote: NoteDataType) => {
     
     
@@ -18,6 +19,9 @@ const NewNote = () => {
       return [...prevNotes, currNote]
     })
 
+    //navigating back to the prev page
+
+    // navigate('/')
   }
   return (
     <MyContainer>
