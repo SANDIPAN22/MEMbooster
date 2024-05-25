@@ -1,0 +1,29 @@
+import React from "react";
+import MyContainer from "./MyContainer";
+import MyBreadcrumbs from "./MyBreadcrumbs";
+import { Typography } from "@mui/material";
+import { Outlet } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux-store/CentralStore";
+
+const RootTemplate = () => {
+  const title = useSelector((state: RootState) => state.title.val);
+  const breadcrumbs = useSelector(
+    (state: RootState) => state.breadcrumbs.values
+  );
+  return (
+    <>
+      <div>
+        <Toaster />
+      </div>
+      <MyContainer>
+        <MyBreadcrumbs paths={breadcrumbs} />
+        <Typography variant="h2">{title}</Typography>
+        <Outlet />
+      </MyContainer>
+    </>
+  );
+};
+
+export default RootTemplate;

@@ -1,72 +1,80 @@
-import React, {useRef, useState} from 'react'
-import { Box, TextField, Button  } from '@mui/material'
-import MyContainer from '../components/MyContainer'
-import { Typography } from '@mui/material'
-import MyBreadcrumbs from '../components/MyBreadcrumbs'
-import RenderAllNotes from '../components/RenderAllNotes'
-import useLocalStorage from '../shared/useLocalStorage'
-import ActionButtons from '../components/ActionButtons'
+import React, { useRef, useState } from "react";
+import { Box, TextField } from "@mui/material";
+import MyContainer from "../components/MyContainer";
+import { Typography } from "@mui/material";
+import MyBreadcrumbs from "../components/MyBreadcrumbs";
+import RenderAllNotes from "../components/RenderAllNotes";
+import useLocalStorage from "../shared/useLocalStorage";
+import ActionButtons from "../components/ActionButtons";
+import { useDispatch } from "react-redux";
+import { setTitle } from "../redux-store/reducers/TitleSlice";
+import { setBreadcrumbs } from "../redux-store/reducers/BreadcrumbsSlice";
 
-// interface FilterNotes {
-//   searchingTitle: string,
-//   searchingTags: string[]
-// }
+interface NoteFiltersType {
+  searchingTitle: string;
+  searchingTags: string[];
+}
 
 const Dashboard = () => {
+  const TitleRef = useRef<HTMLInputElement>(null);
+  const TagsRef = useRef<HTMLInputElement>(null);
+  const [notes, setNotes] = useLocalStorage("notes", []);
 
-  const TitleRef = useRef<HTMLInputElement>(null)
-  const TagsRef = useRef<HTMLInputElement>(null)
-  const [notes, setNotes] = useLocalStorage('notes', [])
- 
-  const [filters, setFilters] = useState({})
-  
+  const [filters, setFilters] = useState<NoteFiltersType>({
+    searchingTitle: "",
+    searchingTags: [],
+  });
 
-  const handleKeyUp = ()=>{
-    const searchingTitle = TitleRef.current?.value
-    const searchingTags = TagsRef.current?.value ? TagsRef.current?.value.split(',') : []
+  const handleKeyUp = () => {
+    const searchingTitle: string = TitleRef.current?.value || "";
+    const searchingTags: string[] = TagsRef.current?.value
+      ? TagsRef.current?.value.split(",")
+      : [];
 
-      setFilters({searchingTitle, searchingTags})
+    setFilters({ searchingTitle, searchingTags });
+  };
 
-  }
+  // set Title using reducer action dispatch
+  const dispatch = useDispatch();
+  dispatch(setTitle("All Notes"));
+
+  // set the breadcrumbs using the action Dispatch
+  dispatch(setBreadcrumbs(["home"]));
+
   return (
-    <MyContainer>
-      <MyBreadcrumbs paths={['home']}/>
-        <Typography variant='h2' >
-          Notes
-        </Typography>
-
-        <form >
-    <Box mt={5} display={'flex'} justifyContent={'space-between'}>
-        <TextField
+    <>
+      <form>
+        <Box mt={5} display={"flex"} justifyContent={"space-between"}>
+          <TextField
             required
             id="outlined-required"
             label="Title"
             inputRef={TitleRef}
             sx={{
-                width: "50%"
+              width: "50%",
             }}
             onChange={handleKeyUp}
-            />
+          />
 
-        <TextField
+          <TextField
             required
             id="outlined-required"
             label="Tags"
             inputRef={TagsRef}
             placeholder="Put Comma Seperated Values"
             sx={{
-                width: "45%"
+              width: "45%",
             }}
             onChange={handleKeyUp}
-            /> 
+          />
         </Box>
-        </form> 
+      </form>
 
-        <RenderAllNotes notes={notes} filters={filters}></RenderAllNotes>
-        
-      <ActionButtons/>
-    </MyContainer>
-  )
-}
+      <RenderAllNotes notes={notes} filters={filters}></RenderAllNotes>
 
-export default Dashboard
+      <ActionButtons />
+    </>
+  );
+};
+
+export default Dashboard;
