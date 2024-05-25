@@ -3,11 +3,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import titleReducer from "../redux-store/reducers/TitleSlice";
 import breadcrumbsReducer from "../redux-store/reducers/BreadcrumbsSlice";
+import bgThemeReducer from "../redux-store/reducers/BgThemeSlice";
 
 export const centralStore = configureStore({
   reducer: {
     title: titleReducer,
     breadcrumbs: breadcrumbsReducer,
+    bgTheme: bgThemeReducer,
   },
 });
 

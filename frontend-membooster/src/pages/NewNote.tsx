@@ -16,8 +16,9 @@ const NewNote = () => {
       console.log("Previous status ==>", prevNotes);
       return [...prevNotes, currNote];
     });
-    toast.loading("Saving in progress!");
+    const toastId = toast.loading("Saving in progress!");
     setTimeout(() => {
+      toast.dismiss(toastId);
       toast.success("Saved Successfully!");
       navigate("/");
     }, 2000);

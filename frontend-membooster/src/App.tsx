@@ -13,25 +13,38 @@ import Loader from "./components/Loader";
 import ShowTask from "./pages/ShowTask";
 import EditTask from "./pages/EditTask";
 import RootTemplate from "./components/RootTemplate";
+import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
+import { PaletteType } from "@material-ui/core";
+import { useSelector } from "react-redux";
+import { RootState } from "./redux-store/CentralStore";
 
 const App = () => {
+  const bgTheme = useSelector((state: RootState) => state.bgTheme.color);
+  const myTheme = createTheme({
+    palette: {
+      mode: bgTheme as PaletteType,
+    },
+  });
   return (
     <Suspense fallback={<Loader />}>
-      <Router>
-        <Routes>
-          <Route path="/login" element={<Login />}></Route>
-          <Route path="/signin" element={<SignIn />}></Route>
-          <Route path="/" element={<RootTemplate />}>
-            <Route index element={<Dashboard />} />
-            <Route path="note/:id">
-              <Route index element={<ShowTask />} />
-              <Route path="edit" element={<EditTask />} />
+      <ThemeProvider theme={myTheme}>
+        <CssBaseline />
+        <Router>
+          <Routes>
+            <Route path="/login" element={<Login />}></Route>
+            <Route path="/signin" element={<SignIn />}></Route>
+            <Route path="/" element={<RootTemplate />}>
+              <Route index element={<Dashboard />} />
+              <Route path="note/:id">
+                <Route index element={<ShowTask />} />
+                <Route path="edit" element={<EditTask />} />
+              </Route>
+              <Route path="new_note" element={<NewNote />}></Route>
             </Route>
-            <Route path="new_note" element={<NewNote />}></Route>
-          </Route>
-          <Route path="*" element={<Navigate to="/" />}></Route>
-        </Routes>
-      </Router>
+            <Route path="*" element={<Navigate to="/" />}></Route>
+          </Routes>
+        </Router>
+      </ThemeProvider>
     </Suspense>
   );
 };

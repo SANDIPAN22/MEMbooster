@@ -6,19 +6,9 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { Provider } from "react-redux";
 import { centralStore } from "./redux-store/CentralStore.tsx";
-import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
-
-const myTheme = createTheme({
-  palette: {
-    mode: "dark",
-  },
-});
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <Provider store={centralStore}>
-    <ThemeProvider theme={myTheme}>
-      <CssBaseline />
-      <App />
-    </ThemeProvider>
+    <App />
   </Provider>
 );
