@@ -1,8 +1,5 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Box, TextField } from "@mui/material";
-import MyContainer from "../components/MyContainer";
-import { Typography } from "@mui/material";
-import MyBreadcrumbs from "../components/MyBreadcrumbs";
 import RenderAllNotes from "../components/RenderAllNotes";
 import useLocalStorage from "../shared/useLocalStorage";
 import ActionButtons from "../components/ActionButtons";
@@ -18,7 +15,7 @@ interface NoteFiltersType {
 const Dashboard = () => {
   const TitleRef = useRef<HTMLInputElement>(null);
   const TagsRef = useRef<HTMLInputElement>(null);
-  const [notes, setNotes] = useLocalStorage("notes", []);
+  const [notes, _setNotes] = useLocalStorage("notes", []);
 
   const [filters, setFilters] = useState<NoteFiltersType>({
     searchingTitle: "",

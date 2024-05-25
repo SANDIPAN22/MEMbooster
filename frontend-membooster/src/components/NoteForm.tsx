@@ -1,9 +1,9 @@
-import React, { FormEvent, useRef } from "react";
+import { FormEvent, useRef } from "react";
 import { Box, TextField, Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
 import Stack from "@mui/material/Stack";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { NoteDataType } from "../shared/commonTypes";
 
 interface NoteFormProps {
@@ -14,7 +14,6 @@ const NoteForm = ({ saveNote }: NoteFormProps) => {
   const TitleRef = useRef<HTMLInputElement>(null);
   const MarkDownRef = useRef<HTMLInputElement>(null);
   const TagsRef = useRef<HTMLInputElement>(null);
-  const navigate = useNavigate();
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();

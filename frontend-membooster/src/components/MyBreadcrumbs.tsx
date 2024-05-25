@@ -1,5 +1,4 @@
-import { Box, Breadcrumbs, Link, Typography } from "@mui/material";
-import React from "react";
+import { Breadcrumbs, Link } from "@mui/material";
 
 interface MyBreadCrumbsProp {
   paths: string[];
