@@ -3,6 +3,7 @@ import Typography from "@mui/material/Typography";
 import { NoteDataType } from "../shared/commonTypes";
 import Chip from "@mui/material/Chip";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "@mui/material";
 
 interface NoteCardProps {
   note: NoteDataType;
@@ -14,16 +15,23 @@ const NoteCard = ({ note, ind }: NoteCardProps) => {
   const handleClick = (id: number) => {
     navigate(`/note/${id}`);
   };
+  const theme = useTheme();
   return (
     <CardContent
       onClick={() => handleClick(ind)}
       sx={{
-        border: "0px solid gray",
+        border: "1px solid gray",
         borderRadius: "2px",
         minWidth: "18rem",
         maxWidth: "18rem",
-        boxShadow: "5px 5px 8px black",
-        "&:hover": { boxShadow: "5px 10px 8px black" },
+        boxShadow: `5px 5px 8px ${
+          theme.palette.mode == "dark" ? "#D6D6D6" : "black"
+        }`,
+        "&:hover": {
+          boxShadow: `5px 10px 8px ${
+            theme.palette.mode == "dark" ? "#D6D6D6" : "black"
+          }`,
+        },
       }}
     >
       <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
