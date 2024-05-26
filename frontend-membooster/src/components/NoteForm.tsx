@@ -61,6 +61,7 @@ const NoteForm = ({ saveNote }: NoteFormProps) => {
             required
             id="outlined-required"
             label="Body"
+            placeholder="Markdown is enabled in this section"
             fullWidth
           />
         </Box>
