@@ -13,7 +13,7 @@ const RootTemplate = () => {
     (state: RootState) => state.breadcrumbs.values
   );
   useEffect(() => {
-    document.title = `MEMBoooster - Note - ${title}`;
+    document.title = `MEMbooster - Note - ${title}`;
   }, [title]);
   return (
     <>
