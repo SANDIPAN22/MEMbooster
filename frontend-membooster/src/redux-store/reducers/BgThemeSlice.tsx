@@ -4,7 +4,7 @@ interface BgThemeType {
   color: string;
 }
 const initialState: BgThemeType = {
-  color: "dark",
+  color: localStorage.getItem("themeMode") || "dark",
 };
 
 const bgThemeSlice = createSlice({
@@ -17,6 +17,7 @@ const bgThemeSlice = createSlice({
       } else {
         state.color = "light";
       }
+      localStorage.setItem("themeMode", state.color);
     },
   },
 });
