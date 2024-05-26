@@ -12,8 +12,8 @@ const ActionButtons = () => {
       sx={{
         "& > :not(style)": { m: 1 },
         position: "fixed",
-        right: "5%",
-        top: "85%",
+        left: "40%",
+        top: "90%",
       }}
     >
       <Link to={"/new_note"}>

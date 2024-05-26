@@ -17,16 +17,13 @@ const NoteForm = ({ saveNote }: NoteFormProps) => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    const currentNoteData = {
+    const currentNoteData: NoteDataType = {
       title: TitleRef.current!.value,
       tags: TagsRef.current!.value.split(","),
       markdown: MarkDownRef.current!.value,
     };
 
     saveNote(currentNoteData);
-    TitleRef.current!.value = "";
-    TagsRef.current!.value = "";
-    MarkDownRef.current!.value = "";
   };
   return (
     <>
