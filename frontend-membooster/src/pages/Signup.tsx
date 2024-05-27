@@ -15,8 +15,7 @@ import Button from "@mui/material/Button";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Link } from "react-router-dom";
 
-CardContent;
-const Login = () => {
+const Signup = () => {
   const [showPassword, setShowPassword] = React.useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -54,7 +53,7 @@ const Login = () => {
                 textAlign={"center"}
                 mb={4}
               >
-                LOG IN
+                SIGN UP
               </Typography>
 
               <TextField
@@ -87,21 +86,18 @@ const Login = () => {
               />
             </CardContent>
             <CardActions sx={{ justifyContent: "center", margin: 2 }}>
-              <Button variant="outlined" color="warning" fullWidth>
-                Forgot Password
-              </Button>
-
               <LoadingButton
                 variant="outlined"
                 loadingPosition="start"
                 fullWidth
               >
-                Log In
+                Sign Up
               </LoadingButton>
             </CardActions>
           </form>
           <Typography textAlign={"center"} m={2}>
-            If you are new here, please <Link to={"/signup"}>sign up</Link>.
+            If you already have account with us, please
+            <Link to={"/login"}>log in</Link>.
           </Typography>
         </Card>
       </Box>
@@ -109,4 +105,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;

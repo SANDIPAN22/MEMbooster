@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import { Suspense, lazy } from "react";
 const Login = lazy(() => import("./pages/Login"));
-const SignIn = lazy(() => import("./pages/SignIn"));
+const Signup = lazy(() => import("./pages/Signup"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const NewNote = lazy(() => import("./pages/NewNote"));
 import Loader from "./components/Loader";
@@ -32,7 +32,7 @@ const App = () => {
         <Router>
           <Routes>
             <Route path="/login" element={<Login />}></Route>
-            <Route path="/signin" element={<SignIn />}></Route>
+            <Route path="/signup" element={<Signup />}></Route>
             <Route path="/" element={<RootTemplate />}>
               <Route index element={<Dashboard />} />
               <Route path="note/:id">
