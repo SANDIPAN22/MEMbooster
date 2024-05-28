@@ -16,7 +16,7 @@ app.use(
     contentSecurityPolicy: false,
   }),
 );
-app.use                      (express.json());
+app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors()); // this one is very risky it is allowing everyone, you need to white-list only necessary origins
 app.use(morgan(MORGAN_MODE));
