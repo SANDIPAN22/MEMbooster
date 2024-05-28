@@ -1,7 +1,14 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+echo "SCANNING THE BACKEND"
 cd ./backend-membooster
+npm run lint
+npm run format
+git add -A .
+cd ..
+echo "SCANNING THE FRONTEND"
+cd ./frontend-membooster
 npm run lint
 npm run format
 git add -A .

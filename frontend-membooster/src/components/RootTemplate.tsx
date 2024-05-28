@@ -10,7 +10,7 @@ import { useEffect } from "react";
 const RootTemplate = () => {
   const title = useSelector((state: RootState) => state.title.val);
   const breadcrumbs = useSelector(
-    (state: RootState) => state.breadcrumbs.values
+    (state: RootState) => state.breadcrumbs.values,
   );
   useEffect(() => {
     document.title = `MEMbooster - Note - ${title}`;

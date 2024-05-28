@@ -50,10 +50,10 @@ const EditTask = () => {
     const ans = confirm("Are you sure about this edits ?");
     if (ans) {
       const toastId = toast.loading(
-        "Please wait, while we are editing this note..."
+        "Please wait, while we are editing this note...",
       );
       setNotes((prev) => {
-        let newNotes = [...prev];
+        const newNotes = [...prev];
         newNotes.splice(Number(id), 1, currentNoteData);
         return newNotes;
       });

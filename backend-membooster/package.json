@@ -7,7 +7,7 @@
     "locally": "nodemon src/server.ts",
     "build": "tsc ",
     "server": "node dist/server.js",
-    "lint": "eslint . --fix --max-warnings=0",
+    "lint": "eslint . --fix --max-warnings=0 && tsc --noEmit",
     "format": "prettier . --write",
     "prepare": "husky install"
   },

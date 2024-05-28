@@ -78,10 +78,10 @@ const NoteCard = ({ note, ind }: NoteCardProps) => {
               const ans = confirm("Are you sure about this deletion?");
               if (ans) {
                 const toastId = toast.loading(
-                  "Please wait, while we are deleting this note..."
+                  "Please wait, while we are deleting this note...",
                 );
                 setNotes((currNotes: NoteDataType[]) => {
-                  let new_notes = [...currNotes];
+                  const new_notes = [...currNotes];
                   new_notes.splice(ind, 1);
                   return new_notes;
                 });

@@ -10,5 +10,5 @@ import { centralStore } from "./redux-store/CentralStore.tsx";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <Provider store={centralStore}>
     <App />
-  </Provider>
+  </Provider>,
 );
