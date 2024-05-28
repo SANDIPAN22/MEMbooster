@@ -1,0 +1,13 @@
+{
+  "name": "backend-membooster",
+  "version": "1.0.0",
+  "description": "The Typescript backend of the membooster app",
+  "main": "index.js",
+  "scripts": {
+    "locally": "nodemon src/server.ts",
+    "build": "tsc ",
+    "server": "node dist/server.js"
+  },
+  "author": "Sandipan Chakraborty",
+  "license": "ISC"
+}
