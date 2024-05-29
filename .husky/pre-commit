@@ -14,7 +14,7 @@
 # git add -A .
 
 read -p "Which part of the repo you want to scan? [back|front|both] " scope < /dev/tty
-
+echo
 if [ $scope == "back" ]; then
 echo "SCANNING THE BACKEND"
 echo "-----------------------"
