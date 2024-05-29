@@ -1,9 +1,10 @@
 import express from "express";
 import type { Express, Request, Response } from "express";
-import { PORT, NODE_ENV, MORGAN_MODE } from "./config";
+import { PORT, APP_ENV, MORGAN_MODE } from "./config";
 import helmet from "helmet";
 import cors from "cors";
 import morgan from "morgan";
+import connectDB from "./utils/connectDB";
 
 const app: Express = express();
 
@@ -27,6 +28,7 @@ app.get("/", (req: Request, res: Response) => {
 
 app.listen(PORT, () => {
   console.log(
-    `The Server is Up and Running at port ${PORT} in ${NODE_ENV} mode.`,
+    `The Server is Up and Running at port ${PORT} in ${APP_ENV} mode.`,
   );
+  connectDB();
 });

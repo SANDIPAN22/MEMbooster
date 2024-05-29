@@ -4,9 +4,9 @@
   "description": "The Typescript backend of the membooster app",
   "main": "index.js",
   "scripts": {
-    "locally": "nodemon src/server.ts",
+    "locally": "cross-env NODE_ENV=prod nodemon src/server.ts",
     "build": "tsc ",
-    "server": "node dist/server.js",
+    "server": "cross-env NODE_ENV=prod node  dist/server.js",
     "lint": "eslint . --fix --max-warnings=0 && tsc --noEmit",
     "format": "prettier . --write",
     "prepare": "husky install"
@@ -28,6 +28,7 @@
     "@types/helmet": "^4.0.0",
     "@types/morgan": "^1.9.9",
     "@types/node": "^20.12.12",
+    "cross-env": "^7.0.3",
     "eslint": "^8.45.0",
     "eslint-config-prettier": "^9.1.0",
     "globals": "^15.3.0",
