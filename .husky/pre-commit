@@ -1,16 +1,50 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+# echo "SCANNING THE BACKEND"
+# cd ./backend-membooster
+# npm run lint
+# npm run format
+# git add -A .
+# cd ..
+# echo "SCANNING THE FRONTEND"
+# cd ./frontend-membooster
+# npm run lint
+# npm run format
+# git add -A .
+
+read -p "Which part of the repo you want to scan? [back|front|both] " scope < /dev/tty
+
+if [ $scope == "back" ]; then
 echo "SCANNING THE BACKEND"
+echo "-----------------------"
+cd ./backend-membooster
+npm run lint
+npm run format
+git add -A .
+elif [ $scope == "front" ]; then
+echo "SCANNING THE FRONTEND"
+echo "-----------------------"
+cd ./frontend-membooster
+npm run lint
+npm run format
+git add -A .
+else
+echo "Both scanning started"
+echo "-----------------------"
+echo "SCANNING THE BACKEND"
+echo "-----------------------"
 cd ./backend-membooster
 npm run lint
 npm run format
 git add -A .
 cd ..
 echo "SCANNING THE FRONTEND"
+echo "-----------------------"
 cd ./frontend-membooster
 npm run lint
 npm run format
 git add -A .
+fi
 
 
