@@ -4,22 +4,24 @@
   "description": "The Typescript backend of the membooster app",
   "main": "index.js",
   "scripts": {
-    "locally": "cross-env NODE_ENV=prod nodemon src/server.ts",
+    "locally": "cross-env NODE_ENV=dev nodemon src/server.ts",
     "build": "tsc ",
     "server": "cross-env NODE_ENV=prod node  dist/server.js",
     "lint": "eslint . --fix --max-warnings=0 && tsc --noEmit",
-    "format": "prettier . --write",
-    "prepare": "husky install"
+    "format": "prettier . --write"
   },
   "author": "Sandipan Chakraborty",
   "license": "ISC",
   "dependencies": {
+    "@typegoose/typegoose": "^12.5.0",
+    "argon2": "^0.40.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "helmet": "^7.1.0",
-    "mongoose": "^8.4.0",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "nanoid": "^3.3.4",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@eslint/js": "^9.3.0",
