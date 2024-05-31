@@ -32,13 +32,13 @@ export class User {
   @prop({ lowercase: true, required: true, unique: true })
   email: string;
 
-  @prop({ required: true, maxlength: 15 })
+  @prop({ required: true })
   name: string;
 
   @prop({ required: true })
   password: string;
 
-  @prop({ required: true, default: () => nanoid() })
+  @prop({ required: true, default: () => nanoid(5) })
   verificationCode: string;
 
   @prop()
