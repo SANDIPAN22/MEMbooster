@@ -2,6 +2,7 @@ import nodemailer from "nodemailer";
 import { MAIL_SETUP } from "../config";
 import VerificationTemplate from "../EmailTemplates/VerificationTemplate";
 import { TransportOptions } from "nodemailer";
+import PasswordResetTemplate from "../EmailTemplates/PasswordResetTemplate";
 
 const transporter = nodemailer.createTransport(MAIL_SETUP as TransportOptions);
 
@@ -25,4 +26,18 @@ export const sendVerificationCode = async (
   }
 };
 
-export const sendPasswordResetCode = async () => {};
+export const sendPasswordResetCode = async (email: string, otp: string) => {
+  const mailBody = PasswordResetTemplate(otp);
+  const mailSubject = "OTP for Password Reset";
+  try {
+    await transporter.sendMail({
+      from: `No Reply <chak.sandipan22.secondary@gmail.com>`, // sender address
+      to: email, // receiver email
+      subject: mailSubject, // Subject line
+      text: otp,
+      html: mailBody,
+    });
+  } catch (e) {
+    console.error("Something broke while sending the mail: ", e);
+  }
+};

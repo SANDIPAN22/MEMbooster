@@ -99,11 +99,10 @@ export default (name: string, otp: string): string => {
               "
             >
               Thank you for choosing MEMbooster. Use the following OTP
-              to complete the procedure to change your email address. OTP is
+              to complete the procedure to verify your account. OTP is
               valid for
               <span style="font-weight: 600; color: #1f1f1f;">5 minutes</span>.
-              Do not share this code with others, including MEMbooster
-              employees.
+              Do not share this code with others. If this below OTP is expired, then simply re sign-in. 
             </p>
             <p
               style="
