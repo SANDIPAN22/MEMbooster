@@ -113,10 +113,14 @@ export const changePasswordController = async (req: Request, res: Response) => {
       user.passwordResetCode = undefined;
       user.password = newPassword;
       await user.save();
-      res.status(202).send("New Password is granted.");
+      res.status(200).send("New Password is granted.");
     }
   } catch (e) {
     console.error(e);
     res.status(500).send("Internal Server Error.");
   }
+};
+
+export const getCurrentUserController = (req: Request, res: Response) => {
+  res.json(res.locals.user);
 };

@@ -4,6 +4,7 @@ import {
   verifyUserController,
   resetPasswordController,
   changePasswordController,
+  getCurrentUserController,
 } from "../controllers/users.controller";
 import validateRequest from "../middlewares/validateResources";
 import {
@@ -12,6 +13,7 @@ import {
   resetPasswordSchemaObj,
   changePasswordSchemaObj,
 } from "../schemas/user.schema";
+import protectedPath from "../middlewares/protected";
 
 const router = express.Router();
 
@@ -32,5 +34,7 @@ router.post(
   validateRequest(changePasswordSchemaObj),
   changePasswordController,
 );
+
+router.get("/current_user", protectedPath, getCurrentUserController);
 
 export default router;
