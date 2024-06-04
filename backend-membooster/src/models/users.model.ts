@@ -14,7 +14,6 @@ import argon2 from "argon2";
   schemaOptions: {
     timestamps: true,
     collection: "Users",
-    expireAfterSeconds: 300,
   },
 })
 // pre safe hook define ==> to hashify the password string

@@ -7,7 +7,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
 
   // if access token is missing then this request is forbidden
   if (!AT) {
-    res.status(403).send("Forbidden").end();
+    return res.status(403).send("Forbidden").end();
   }
   try {
     const decodedPayload = verifyJwt(AT, "ACCESS_TOKEN_PUBLIC_KEY");
@@ -25,5 +25,6 @@ export default async (req: Request, res: Response, next: NextFunction) => {
       return;
     }
     res.status(403).send("Forbidden").end();
+    return;
   }
 };

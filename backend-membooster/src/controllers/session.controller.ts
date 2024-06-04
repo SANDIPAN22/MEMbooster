@@ -69,9 +69,9 @@ export const RefreshAccessTokenController = async (
     if (decodedPayload) {
       const { id } = decodedPayload;
       // need to call db to check to check and get the user data
-      console.log("DECODED RT===>", decodedPayload);
+
       const user = await UserModel.findById(id);
-      console.log("User is ==>", user);
+
       if (!user) {
         res.status(403).send("Forbidden").end();
         return;
