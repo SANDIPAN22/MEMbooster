@@ -10,14 +10,14 @@ const Signup = lazy(() => import("./pages/Signup"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const NewNote = lazy(() => import("./pages/NewNote"));
 import Loader from "./components/Loader";
-import ShowTask from "./pages/ShowTask";
-import EditTask from "./pages/EditTask";
+import ShowTask from "./pages/ShowNote";
+import EditTask from "./pages/EditNote";
 import RootTemplate from "./components/RootTemplate";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import { PaletteType } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { RootState } from "./redux-store/CentralStore";
-
+import "./assets/common.css";
 const App = () => {
   const bgTheme = useSelector((state: RootState) => state.bgTheme.color);
   const myTheme = createTheme({

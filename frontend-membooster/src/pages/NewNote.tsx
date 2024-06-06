@@ -25,8 +25,17 @@ const NewNote = () => {
   };
   const dispatch = useDispatch();
   dispatch(setTitle("Add Note"));
-  dispatch(setBreadcrumbs(["home", "new_note"]));
-  return <NoteForm saveNote={saveNote} />;
+  dispatch(
+    setBreadcrumbs([
+      { path: "/", name: "home" },
+      { path: `/new_note`, name: `NEW NOTE` },
+    ]),
+  );
+  return (
+    <>
+      <NoteForm saveNote={saveNote} />
+    </>
+  );
 };
 
 export default NewNote;

@@ -36,7 +36,7 @@ const Dashboard = () => {
   dispatch(setTitle("All Notes"));
 
   // set the breadcrumbs using the action Dispatch
-  dispatch(setBreadcrumbs(["home"]));
+  dispatch(setBreadcrumbs([{ path: "/", name: "home" }]));
 
   return (
     <>

@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 interface BreadcrumbsType {
-  values: string[];
+  values: { name: string; path: string }[];
 }
 
 const initialState: BreadcrumbsType = {
@@ -13,7 +13,10 @@ export const breadcrumbsSlice = createSlice({
   name: "breadcrumbs",
   initialState,
   reducers: {
-    setBreadcrumbs: (state, action: PayloadAction<string[]>) => {
+    setBreadcrumbs: (
+      state,
+      action: PayloadAction<{ name: string; path: string }[]>,
+    ) => {
       state.values = action.payload;
     },
   },

@@ -1,7 +1,7 @@
 import { Breadcrumbs, Link } from "@mui/material";
 
 interface MyBreadCrumbsProp {
-  paths: string[];
+  paths: { name: string; path: string }[];
 }
 
 const MyBreadcrumbs = ({ paths }: MyBreadCrumbsProp) => {
@@ -10,8 +10,8 @@ const MyBreadcrumbs = ({ paths }: MyBreadCrumbsProp) => {
       <Breadcrumbs>
         {paths.map((path, index) => {
           return (
-            <Link underline="hover" href={path} key={index}>
-              {path}
+            <Link underline="hover" href={path.path} key={index}>
+              {path.name}
             </Link>
           );
         })}

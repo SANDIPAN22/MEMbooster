@@ -1,10 +1,11 @@
-import { FormEvent, useRef } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { Box, TextField, Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
 import Stack from "@mui/material/Stack";
 import { Link } from "react-router-dom";
 import { NoteDataType } from "../shared/commonTypes";
+import TextEditor from "./TextEditor";
 
 interface NoteFormProps {
   saveNote: (data: NoteDataType) => void;
@@ -12,15 +13,16 @@ interface NoteFormProps {
 
 const NoteForm = ({ saveNote }: NoteFormProps) => {
   const TitleRef = useRef<HTMLInputElement>(null);
-  const MarkDownRef = useRef<HTMLInputElement>(null);
+
   const TagsRef = useRef<HTMLInputElement>(null);
+  const [text, setText] = useState<string>("");
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     const currentNoteData: NoteDataType = {
       title: TitleRef.current!.value,
       tags: TagsRef.current!.value.split(","),
-      markdown: MarkDownRef.current!.value,
+      markdown: text,
     };
 
     saveNote(currentNoteData);
@@ -50,7 +52,7 @@ const NoteForm = ({ saveNote }: NoteFormProps) => {
           />
         </Box>
         <Box mt={3}>
-          <TextField
+          {/* <TextField
             multiline
             minRows={12}
             maxRows={100}
@@ -60,7 +62,8 @@ const NoteForm = ({ saveNote }: NoteFormProps) => {
             label="Body"
             placeholder="Markdown is enabled in this section"
             fullWidth
-          />
+          /> */}
+          <TextEditor text={text} readOnly={false} setText={setText} />
         </Box>
         <Stack direction="row" spacing={2} mt={3} justifyContent={"end"}>
           <Link to="..">

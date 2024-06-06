@@ -1,0 +1,8 @@
+.ql-container {
+  height: 45vh;
+  border-radius: 8px;
+}
+.ql-toolbar {
+  border-radius: 8px;
+  text-align: center;
+}

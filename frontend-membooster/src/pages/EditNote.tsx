@@ -1,4 +1,4 @@
-import React, { FormEvent, useRef } from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import useLocalStorage from "../shared/useLocalStorage";
@@ -10,12 +10,13 @@ import { Box, Button, Chip, Stack, TextField } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
 import toast from "react-hot-toast";
+import TextEditor from "../components/TextEditor";
 
 const EditTask = () => {
+  const [text, setText] = useState<string>("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const TitleRef = useRef<HTMLInputElement>(null);
-  const MarkDownRef = useRef<HTMLInputElement>(null);
   const TagsRef = useRef<HTMLInputElement>(null);
 
   // get the params
@@ -32,19 +33,30 @@ const EditTask = () => {
 
   if (id && Number(id) >= 0 && Number(id) < notes.length) {
     filtered_note = notes[Number(id)];
+
     // set Title using reducer action dispatch
     dispatch(setTitle(`EDIT :: ${filtered_note.title}`));
 
     // set the breadcrumbs using the action Dispatch
-    dispatch(setBreadcrumbs(["/home", `/note/${id}/edit`]));
+    dispatch(
+      setBreadcrumbs([
+        { path: "/", name: "home" },
+        { path: `/note/${id}/edit`, name: `EDIT NOTE - ${id}` },
+      ]),
+    );
   }
+  useEffect(() => {
+    if (filtered_note.markdown.toString().length > 0) {
+      setText(filtered_note.markdown.toString());
+    }
+  }, [filtered_note.markdown]);
 
   const handleEdit = (e: FormEvent) => {
     e.preventDefault();
     const currentNoteData: NoteDataType = {
       title: TitleRef.current!.value,
       tags: TagsRef.current!.value.split(","),
-      markdown: MarkDownRef.current!.value,
+      markdown: text,
     };
 
     const ans = confirm("Are you sure about this edits ?");
@@ -94,15 +106,16 @@ const EditTask = () => {
                 id="outlined-required"
                 label="Tags"
                 inputRef={TagsRef}
-                placeholder="Put Comma Seperated Values. No space in between"
+                placeholder="Put Comma Separated Values. No space in between"
                 sx={{
                   width: "45%",
                 }}
                 defaultValue={filtered_note.tags.toString()}
               />
             </Box>
+
             <Box mt={3}>
-              <TextField
+              {/* <TextField
                 multiline
                 minRows={12}
                 maxRows={100}
@@ -113,7 +126,9 @@ const EditTask = () => {
                 placeholder="Markdown is enabled in this section"
                 defaultValue={filtered_note.markdown.toString()}
                 fullWidth
-              />
+              /> */}
+
+              <TextEditor text={text} readOnly={false} setText={setText} />
             </Box>
             <Stack direction="row" spacing={2} mt={3} justifyContent={"end"}>
               <Link to="/">
