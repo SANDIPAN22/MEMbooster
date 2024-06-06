@@ -1,5 +1,5 @@
 .ql-container {
-  height: 45vh;
+  min-height: 45vh;
   border-radius: 8px;
 }
 .ql-toolbar {
