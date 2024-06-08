@@ -6,9 +6,12 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { Provider } from "react-redux";
 import { centralStore } from "./redux-store/CentralStore.tsx";
+import { CookiesProvider } from "react-cookie";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <Provider store={centralStore}>
-    <App />
+    <CookiesProvider>
+      <App />
+    </CookiesProvider>
   </Provider>,
 );

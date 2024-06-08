@@ -22,8 +22,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors()); // this one is very risky it is allowing everyone, you need to white-list only necessary origins
 app.use(morgan(MORGAN_MODE));
-// before you do anything plz check whether it is coming from the known frontend or not
-app.use();
+
 app.use(router);
 
 app.listen(PORT, () => {

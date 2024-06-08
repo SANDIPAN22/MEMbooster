@@ -23,3 +23,4 @@ package-*
 *.njsproj
 *.sln
 *.sw?
+.env

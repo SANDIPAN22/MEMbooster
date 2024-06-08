@@ -1,8 +1,5 @@
 import Box from "@mui/material/Box";
 import Fab from "@mui/material/Fab";
-import AddIcon from "@mui/icons-material/Add";
-
-import { Link } from "react-router-dom";
 
 import ThemeSwitch from "./ThemeSwitch";
 const ActionButtons = () => {
@@ -11,20 +8,10 @@ const ActionButtons = () => {
       sx={{
         "& > :not(style)": { m: 1 },
         position: "fixed",
-        left: "40%",
+        left: "45%",
         top: "90%",
       }}
     >
-      <Link to={"/new_note"}>
-        <Fab
-          variant="extended"
-          sx={{ opacity: "0.8", "&:hover": { opacity: "1" } }}
-        >
-          <AddIcon />
-          Add Note
-        </Fab>
-      </Link>
-
       <Fab
         variant="extended"
         sx={{ opacity: "0.8", "&:hover": { opacity: "1" } }}

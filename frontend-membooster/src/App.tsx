@@ -9,6 +9,7 @@ const Login = lazy(() => import("./pages/Login"));
 const Signup = lazy(() => import("./pages/Signup"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const NewNote = lazy(() => import("./pages/NewNote"));
+const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
 import Loader from "./components/Loader";
 import ShowTask from "./pages/ShowNote";
 import EditTask from "./pages/EditNote";
@@ -18,6 +19,7 @@ import { PaletteType } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { RootState } from "./redux-store/CentralStore";
 import "./assets/common.css";
+
 const App = () => {
   const bgTheme = useSelector((state: RootState) => state.bgTheme.color);
   const myTheme = createTheme({
@@ -33,6 +35,7 @@ const App = () => {
           <Routes>
             <Route path="/login" element={<Login />}></Route>
             <Route path="/signup" element={<Signup />}></Route>
+            <Route path="/forgot_password" element={<ForgotPassword />}></Route>
             <Route path="/" element={<RootTemplate />}>
               <Route index element={<Dashboard />} />
               <Route path="note/:id">

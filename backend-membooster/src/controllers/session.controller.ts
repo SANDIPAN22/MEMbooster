@@ -13,18 +13,22 @@ export const logInController = async (
   try {
     const user = await UserModel.findOne({ email });
     if (!user) {
-      res.status(403).send("Authentication is failed. I don't know you.").end();
+      return res
+        .status(403)
+        .send("Authentication is failed. I don't know you.")
+        .end();
     }
     if (!user?.verified) {
-      res
+      return res
         .status(401)
-        .send(
-          "Authorization is failed. I know you but you are not verified. Please verify the mail yourself first",
-        )
+        .send("Login is failed. Please verify the email first!")
         .end();
     }
     if (!(await user?.validatePassword(password))) {
-      res.status(403).send("Authentication is failed. I don't know you.").end();
+      return res
+        .status(403)
+        .send("Authentication is failed. I don't know you.")
+        .end();
     } else {
       if (user) {
         // create access_token and refresh_token
@@ -42,12 +46,12 @@ export const logInController = async (
             expiresIn: "1y",
           },
         );
-        res.status(200).json({ access_token, refresh_token });
+        return res.status(200).json({ access_token, refresh_token });
       }
     }
   } catch (e) {
     console.error("error while creating the session::", e);
-    res.status(500).send("Internal server error.");
+    return res.status(500).send("Internal server error.");
   }
 };
 

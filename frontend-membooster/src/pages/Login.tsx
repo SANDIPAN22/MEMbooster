@@ -1,112 +1,132 @@
-import {
-  Box,
-  Card,
-  CardActions,
-  CardContent,
-  IconButton,
-  InputAdornment,
-  TextField,
-  Typography,
-} from "@mui/material";
-import React from "react";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import * as React from "react";
+import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import LoadingButton from "@mui/lab/LoadingButton";
-import { Link } from "react-router-dom";
 
-CardContent;
-const Login = () => {
-  const [showPassword, setShowPassword] = React.useState(false);
+import TextField from "@mui/material/TextField";
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
+import Face2Icon from "@mui/icons-material/Face2";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
 
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>,
-  ) => {
-    event.preventDefault();
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { z } from "zod";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { LoginService } from "../services/authServices";
+import toast from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import ActionButtons from "../components/ActionButtons";
+
+const loginSchema = z.object({
+  email: z.string({ required_error: "Email is required" }).email(),
+  password: z.string().min(1, "Password is required"),
+});
+
+type LoginType = z.infer<typeof loginSchema>;
+
+export default function Login() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginType>({ resolver: zodResolver(loginSchema) });
+  const navigate = useNavigate();
+  const [_cookies, setCookie] = useCookies();
+  const onSubmit: SubmitHandler<LoginType> = async (data) => {
+    // call the backend
+    try {
+      const resp = await LoginService(data);
+      if (resp.code === 200) {
+        // set cookies
+        setCookie("access_token", resp.data.access_token, { path: "/" });
+        setCookie("refresh_token", resp.data.refresh_token, { path: "/" });
+        navigate("/");
+      } else {
+        toast.error(resp.error_msg);
+      }
+    } catch (err) {
+      toast.error("Unable to login...");
+    }
   };
+
   return (
-    <>
+    <Container component="main" maxWidth="xs">
+      <Toaster />
+      <ActionButtons />
       <Box
-        display={"flex"}
-        width={"100vw"}
-        height={"100vh"}
-        justifyContent={"center"}
-        alignItems={"center"}
-        bgcolor={"lightgray"}
+        sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
       >
-        <Card
-          elevation={20}
-          sx={{
-            width: { xs: "300px", sm: "550px" },
-
-            borderRadius: "12px",
-          }}
+        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <Face2Icon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Sign in
+        </Typography>
+        <Box
+          component="form"
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
+          sx={{ mt: 1 }}
         >
-          <form>
-            <CardContent>
-              <Typography
-                sx={{ fontSize: 40 }}
-                color="text.secondary"
-                boxShadow={"1px 1px 12px"}
-                borderRadius={2}
-                textAlign={"center"}
-                mb={4}
-              >
-                LOG IN
-              </Typography>
+          <TextField
+            margin="normal"
+            required
+            error={errors.email ? true : false}
+            {...register("email")}
+            helperText={errors.email?.message}
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            error={errors.password ? true : false}
+            {...register("password")}
+            helperText={errors.password?.message}
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+          />
 
-              <TextField
-                id="outlined-error-helper-text"
-                label="Email"
-                type="email"
-                sx={{ marginBottom: "25px" }}
-                fullWidth
-              />
-              <TextField
-                id="outlined-error-helper-text"
-                label="Password"
-                type={showPassword ? "text" : "password"}
-                sx={{ marginBottom: "20px" }}
-                fullWidth
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge="end"
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </CardContent>
-            <CardActions sx={{ justifyContent: "center", margin: 2 }}>
-              <Button variant="outlined" color="warning" fullWidth>
-                Forgot Password
-              </Button>
-
-              <LoadingButton
-                variant="outlined"
-                loadingPosition="start"
-                fullWidth
-              >
-                Log In
-              </LoadingButton>
-            </CardActions>
-          </form>
-          <Typography textAlign={"center"} m={2}>
-            If you are new here, please <Link to={"/signup"}>sign up</Link>.
-          </Typography>
-        </Card>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Loading..." : "Sign In"}
+          </Button>
+          <Grid container>
+            <Grid item xs>
+              <Link href="/forgot_password" variant="body2">
+                Forgot password?
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link href="/signup" variant="body2">
+                {"Don't have an account? Sign Up"}
+              </Link>
+            </Grid>
+          </Grid>
+        </Box>
       </Box>
-    </>
+    </Container>
   );
-};
-
-export default Login;
+}

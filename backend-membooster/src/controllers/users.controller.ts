@@ -16,12 +16,13 @@ export const createUserController = async (
   res: Response,
 ) => {
   const data = req.body;
+
   // as we are assured that, the data is the valid one ( Thanks to ZOD), we can go for the DB entry
   try {
     const resp = await UserModel.create(data);
-
+    // trigger the mail for email verification
     await sendVerificationCode(data.email, data.name, resp.verificationCode);
-    res.status(201).send("User successfully created.");
+    res.status(201).json({ temp_id: resp._id });
   } catch (e: any) {
     if (e.code === 11000) {
       res.status(409).send("Um! The account is already present");
@@ -64,14 +65,14 @@ export const resetPasswordController = async (
   const user = await UserModel.findOne({ email: emailId });
   if (user === null) {
     console.log("User with this email does not exist.");
-    res
+    return res
       .send(
-        "If a user with this email is registered, you will get get a password reset email.",
+        "If this email is registered, you will get get a password reset OTP via email.",
       )
       .end();
   } else if (!user?.verified) {
     console.log("The user is not verified.");
-    res.send("The user is not verified.").end();
+    return res.status(401).send("The user is not verified.").end();
   } else {
     const PASSWORD_RESET_CODE = nanoid(8);
     user.passwordResetCode = PASSWORD_RESET_CODE;
@@ -81,7 +82,7 @@ export const resetPasswordController = async (
       await sendPasswordResetCode(emailId, PASSWORD_RESET_CODE);
       res
         .send(
-          "If a user with this email is registered, you will get get a password reset email.",
+          "If this email is registered, you will get get a password reset OTP via email.",
         )
         .end();
     } catch (e) {
@@ -94,21 +95,18 @@ export const resetPasswordController = async (
 export const changePasswordController = async (req: Request, res: Response) => {
   const { emailId, otp } = req.query;
   const { newPassword } = req.body;
+
   try {
     const user = await UserModel.findOne({
       $and: [{ email: emailId }, { passwordResetCode: otp }],
     });
-    console.log("Captured User==>", user);
+
     if (!user) {
       console.log("The user is not the existing one.");
-      res
-        .send(
-          "If you have an account with us then we have sent you a password reset email",
-        )
-        .end();
+      res.status(403).send("Unable to set your password.").end();
     } else if (!user.verified) {
       console.log(" the user is not yet verified.");
-      res.status(400).send("You are not yet verified.").end();
+      res.status(401).send("You are not yet verified.").end();
     } else {
       user.passwordResetCode = undefined;
       user.password = newPassword;
