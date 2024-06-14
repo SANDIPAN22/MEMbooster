@@ -1,8 +1,7 @@
 import { useDispatch } from "react-redux";
 import { setAccessToken } from "../redux-store/reducers/AccessTokenSlice";
 import axios from "axios";
-
-const HOST = import.meta.env.VITE_BACKEND_HOST_NAME;
+import { HOST } from "../../package.json";
 
 const useRefreshToken = () => {
   const dispatch = useDispatch();
