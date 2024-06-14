@@ -19,6 +19,7 @@ import { PaletteType } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { RootState } from "./redux-store/CentralStore";
 import "./assets/common.css";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   const bgTheme = useSelector((state: RootState) => state.bgTheme.color);
@@ -27,6 +28,7 @@ const App = () => {
       mode: bgTheme as PaletteType,
     },
   });
+
   return (
     <Suspense fallback={<Loader />}>
       <ThemeProvider theme={myTheme}>
@@ -36,13 +38,15 @@ const App = () => {
             <Route path="/login" element={<Login />}></Route>
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/forgot_password" element={<ForgotPassword />}></Route>
-            <Route path="/" element={<RootTemplate />}>
-              <Route index element={<Dashboard />} />
-              <Route path="note/:id">
-                <Route index element={<ShowTask />} />
-                <Route path="edit" element={<EditTask />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/" element={<RootTemplate />}>
+                <Route index element={<Dashboard />} />
+                <Route path="note/:id">
+                  <Route index element={<ShowTask />} />
+                  <Route path="edit" element={<EditTask />} />
+                </Route>
+                <Route path="new_note" element={<NewNote />}></Route>
               </Route>
-              <Route path="new_note" element={<NewNote />}></Route>
             </Route>
             <Route path="*" element={<Navigate to="/" />}></Route>
           </Routes>

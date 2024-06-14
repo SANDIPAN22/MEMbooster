@@ -41,7 +41,7 @@ const RenderAllNotes = ({ notes, filters }: RenderAllNotesProps) => {
         justifyContent={"center"}
       >
         {finalNotes.map((note, index) => {
-          return <NoteCard note={note} ind={index} />;
+          return <NoteCard note={note} key={index} ind={note!._id || ""} />;
         })}
       </Box>
     </>

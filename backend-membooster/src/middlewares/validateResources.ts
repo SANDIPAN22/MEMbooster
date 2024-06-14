@@ -13,6 +13,7 @@ const validateRequest =
       });
       next();
     } catch (e: any) {
+      console.error("ZOD VALIDATION FAILED", e);
       return res.status(400).send(e.errors).end();
     }
   };

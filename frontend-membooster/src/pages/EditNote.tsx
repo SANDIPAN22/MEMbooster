@@ -1,7 +1,6 @@
 import React, { FormEvent, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
-import useLocalStorage from "../shared/useLocalStorage";
 import { NoteDataType } from "../shared/commonTypes";
 import { setTitle } from "../redux-store/reducers/TitleSlice";
 import { setBreadcrumbs } from "../redux-store/reducers/BreadcrumbsSlice";
@@ -11,6 +10,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
 import toast from "react-hot-toast";
 import TextEditor from "../components/TextEditor";
+import useNoteServices from "../services/useNoteServices";
 
 const EditTask = () => {
   const [text, setText] = useState<string>("");
@@ -18,24 +18,33 @@ const EditTask = () => {
   const navigate = useNavigate();
   const TitleRef = useRef<HTMLInputElement>(null);
   const TagsRef = useRef<HTMLInputElement>(null);
-
+  const [note, setNote] = useState<NoteDataType>();
+  const [loading, setLoading] = useState(true);
+  const { updateNote, getNote } = useNoteServices();
   // get the params
   const { id } = useParams();
 
-  // fetch all notes
-  const [notes, setNotes] = useLocalStorage<NoteDataType>("notes", []);
+  // fetch the particular note
+  useEffect(() => {
+    const toastId = toast.loading("Fetching and loading the note...");
+    (async () => {
+      try {
+        const resp = await getNote({ params: { noteId: id || "" } });
+        setText(resp.note.markdown);
+        setNote(resp.note);
+      } catch (err) {
+        console.error(err);
+        toast.error("Error occurred to load the note!");
+      } finally {
+        toast.dismiss(toastId);
+        setLoading(false);
+      }
+    })();
+  }, [getNote, id]);
 
-  let filtered_note: NoteDataType = {
-    title: "",
-    tags: [],
-    markdown: "",
-  };
-
-  if (id && Number(id) >= 0 && Number(id) < notes.length) {
-    filtered_note = notes[Number(id)];
-
+  useEffect(() => {
     // set Title using reducer action dispatch
-    dispatch(setTitle(`EDIT :: ${filtered_note.title}`));
+    dispatch(setTitle(`EDIT :: ${note?.title}`));
 
     // set the breadcrumbs using the action Dispatch
     dispatch(
@@ -44,14 +53,9 @@ const EditTask = () => {
         { path: `/note/${id}/edit`, name: `EDIT NOTE - ${id}` },
       ]),
     );
-  }
-  useEffect(() => {
-    if (filtered_note.markdown.toString().length > 0) {
-      setText(filtered_note.markdown.toString());
-    }
-  }, [filtered_note.markdown]);
+  }, [dispatch, note, id]);
 
-  const handleEdit = (e: FormEvent) => {
+  const handleEdit = async (e: FormEvent) => {
     e.preventDefault();
     const currentNoteData: NoteDataType = {
       title: TitleRef.current!.value,
@@ -64,28 +68,38 @@ const EditTask = () => {
       const toastId = toast.loading(
         "Please wait, while we are editing this note...",
       );
-      setNotes((prev) => {
-        const newNotes = [...prev];
-        newNotes.splice(Number(id), 1, currentNoteData);
-        return newNotes;
-      });
-      setTimeout(() => {
-        toast.dismiss(toastId);
-        toast.success("Successfully edited !");
+      try {
+        await updateNote({
+          body: currentNoteData,
+          params: { noteId: id || "" },
+        });
+
         navigate("/");
-      }, 2000);
+      } catch (err) {
+        toast.error("Problem faced while saving this note.");
+      } finally {
+        toast.dismiss(toastId);
+      }
     }
   };
+  if (loading) {
+    return <>Loading...</>;
+  }
 
   return (
     <>
-      {filtered_note.title.length === 0 ? (
+      {!note ? (
         <Navigate to={"/"} />
       ) : (
         <>
           <Stack direction="row" spacing={1}>
-            {filtered_note.tags.map((tag) => (
-              <Chip label={tag} color="primary" variant="outlined" />
+            {note?.tags.map((tag, index) => (
+              <Chip
+                label={tag}
+                color="primary"
+                key={index}
+                variant="outlined"
+              />
             ))}
           </Stack>
 
@@ -99,7 +113,7 @@ const EditTask = () => {
                 sx={{
                   width: "50%",
                 }}
-                defaultValue={filtered_note.title}
+                defaultValue={note?.title}
               />
               <TextField
                 required
@@ -110,24 +124,11 @@ const EditTask = () => {
                 sx={{
                   width: "45%",
                 }}
-                defaultValue={filtered_note.tags.toString()}
+                defaultValue={note?.tags.toString()}
               />
             </Box>
 
             <Box mt={3}>
-              {/* <TextField
-                multiline
-                minRows={12}
-                maxRows={100}
-                inputRef={MarkDownRef}
-                required
-                id="outlined-required"
-                label="Body"
-                placeholder="Markdown is enabled in this section"
-                defaultValue={filtered_note.markdown.toString()}
-                fullWidth
-              /> */}
-
               <TextEditor text={text} readOnly={false} setText={setText} />
             </Box>
             <Stack direction="row" spacing={2} mt={3} justifyContent={"end"}>

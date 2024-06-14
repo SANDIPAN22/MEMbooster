@@ -43,7 +43,7 @@ const ForgotPassword = () => {
     if (re.test(email)) {
       try {
         const resp = await ForgotPasswordService({ emailId: email });
-        console.log(resp);
+
         if (resp.code == 401) {
           toast.error("This account is not yet verified.");
         } else {

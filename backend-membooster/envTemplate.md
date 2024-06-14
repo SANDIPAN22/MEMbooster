@@ -2,8 +2,9 @@
 
 ## File name and location
 
-- File name should be => .env.{environment_name} Example: if the environment is 'dev' then name will be ".env.dev"
-- This env file should be locatedat that level where this file is present
+- File name should be => .env
+- This env file should be located at that level where this file is present
+- Mandatorily gitignored it before pushing into remote repository.
 
 ## The mandatory variables needed and their types
 
@@ -16,3 +17,4 @@
 * **ACCESS_TOKEN_PUBLIC_KEY** = string (base64)
 * **REFRESH_TOKEN_PRIVATE_KEY** = string (base64)
 * **REFRESH_TOKEN_PUBLIC_KEY** = string (base64)
+* **ALLOWED_ORIGINS** = Array of allowed frontend origins

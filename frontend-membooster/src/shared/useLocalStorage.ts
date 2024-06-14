@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 
 function useLocalStorage<T>(
   key: string,
-  initialVal: T[],
-): [T[], (data: (data: T[]) => T[]) => void] {
+  initialVal: T,
+): [T, (data: (data: T) => T) => void] {
   const [val, setVal] = useState(() => {
     try {
       const data = localStorage.getItem(key);
@@ -26,7 +26,7 @@ function useLocalStorage<T>(
     }
   }, [val, key]);
 
-  return [val, setVal] as [T[], typeof setVal];
+  return [val, setVal];
 }
 
 export default useLocalStorage;

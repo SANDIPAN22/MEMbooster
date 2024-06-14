@@ -1,7 +1,7 @@
 // we write generic configs (which are not any thing specific) here in the index.ts
 
 import dotenv from "dotenv";
-dotenv.config({ path: `.env.${process.env.NODE_ENV || "dev"}` });
+dotenv.config({ path: `.env` });
 
 export const PORT: number = parseInt(process.env.PORT || "", 10);
 export const APP_ENV: string = process.env.NODE_ENV || "dev";
@@ -14,3 +14,4 @@ export const KEYS = {
   REFRESH_TOKEN_PRIVATE_KEY: process.env.REFRESH_TOKEN_PRIVATE_KEY || "",
   REFRESH_TOKEN_PUBLIC_KEY: process.env.REFRESH_TOKEN_PUBLIC_KEY || "",
 };
+export const ALLOWED_ORIGINS = JSON.parse(process.env.ALLOWED_ORIGINS || "");

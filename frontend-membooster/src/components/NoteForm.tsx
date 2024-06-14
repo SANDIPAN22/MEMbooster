@@ -27,6 +27,7 @@ const NoteForm = ({ saveNote }: NoteFormProps) => {
 
     saveNote(currentNoteData);
   };
+
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -52,17 +53,6 @@ const NoteForm = ({ saveNote }: NoteFormProps) => {
           />
         </Box>
         <Box mt={3}>
-          {/* <TextField
-            multiline
-            minRows={12}
-            maxRows={100}
-            inputRef={MarkDownRef}
-            required
-            id="outlined-required"
-            label="Body"
-            placeholder="Markdown is enabled in this section"
-            fullWidth
-          /> */}
           <TextEditor text={text} readOnly={false} setText={setText} />
         </Box>
         <Stack direction="row" spacing={2} mt={3} justifyContent={"end"}>

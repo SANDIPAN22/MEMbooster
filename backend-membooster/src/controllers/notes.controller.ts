@@ -45,8 +45,10 @@ export const getNote = async (req: Request, res: Response) => {
   const { _id } = res.locals.user || { _id: null };
 
   try {
-    const note = await NoteModel.findById(noteId);
-    if (note && note.author.toString() !== _id.toString()) {
+    const _note = await NoteModel.findById(noteId);
+    const note = _note?.toJSON();
+    const noteAuthor = note?.author.toJSON();
+    if (note && noteAuthor?.toString() !== _id) {
       res.status(403).send("Forbidden").end();
       return;
     }
@@ -103,8 +105,6 @@ export const updateNote = async (req: Request, res: Response) => {
       res.status(403).send("Forbidden").end();
       return;
     }
-
-    return res.status(200).json({ note });
   } catch (e) {
     console.error("Error occurred while fetching a single note::", e);
     return res.status(500).send("Internal server error");

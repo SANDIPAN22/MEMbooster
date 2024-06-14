@@ -4,12 +4,13 @@ import { configureStore } from "@reduxjs/toolkit";
 import titleReducer from "../redux-store/reducers/TitleSlice";
 import breadcrumbsReducer from "../redux-store/reducers/BreadcrumbsSlice";
 import bgThemeReducer from "../redux-store/reducers/BgThemeSlice";
-
+import accessTokenReducer from "../redux-store/reducers/AccessTokenSlice";
 export const centralStore = configureStore({
   reducer: {
     title: titleReducer,
     breadcrumbs: breadcrumbsReducer,
     bgTheme: bgThemeReducer,
+    accessToken: accessTokenReducer,
   },
 });
 

@@ -1,4 +1,5 @@
-import { Breadcrumbs, Link } from "@mui/material";
+import { Breadcrumbs } from "@mui/material";
+import { Link } from "react-router-dom";
 
 interface MyBreadCrumbsProp {
   paths: { name: string; path: string }[];
@@ -10,8 +11,10 @@ const MyBreadcrumbs = ({ paths }: MyBreadCrumbsProp) => {
       <Breadcrumbs>
         {paths.map((path, index) => {
           return (
-            <Link underline="hover" href={path.path} key={index}>
+            <Link to={path.path} key={index} style={{ textDecoration: "none" }}>
+              {/* <Typography variant="body1" sx={}> */}
               {path.name}
+              {/* </Typography> */}
             </Link>
           );
         })}

@@ -4,10 +4,7 @@ export const noteSchemaObj = object({
   body: object({
     title: string({ required_error: "Title is mandatory." }),
 
-    markdown: string({ required_error: "Write something to save." }).max(
-      100,
-      "Char limit is overflowing.",
-    ),
+    markdown: string({ required_error: "Write something to save." }),
 
     tags: string().array().nonempty("At least One tag is needed."),
   }),

@@ -4,21 +4,42 @@ import { NoteDataType } from "../shared/commonTypes";
 import Chip from "@mui/material/Chip";
 import { useNavigate } from "react-router-dom";
 import { Button, Card, CardActions, useTheme } from "@mui/material";
-import useLocalStorage from "../shared/useLocalStorage";
 import toast from "react-hot-toast";
+import useNoteServices from "../services/useNoteServices";
 
 interface NoteCardProps {
   note: NoteDataType;
-  ind: number;
+  ind: string;
 }
 
 const NoteCard = ({ note, ind }: NoteCardProps) => {
+  const { deleteNote } = useNoteServices();
   const navigate = useNavigate();
-  const handleClick = (id: number) => {
-    navigate(`/note/${id}`);
+  const handleClick = () => {
+    navigate(`/note/${ind}`);
   };
   const theme = useTheme();
-  const [_notes, setNotes] = useLocalStorage<NoteDataType>("notes", []);
+  const handleDelete = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const ans = confirm("Are you sure about this deletion?");
+    if (ans) {
+      // delete the note
+      const toastId = toast.loading(
+        "Please wait, while we are deleting this note...",
+      );
+      try {
+        await deleteNote({
+          params: { noteId: ind },
+        });
+        navigate(0);
+      } catch (err) {
+        console.error(err);
+        toast.error("Error occurred to load the note!");
+      } finally {
+        toast.dismiss(toastId);
+      }
+    }
+  };
   return (
     <Card
       elevation={20}
@@ -31,7 +52,7 @@ const NoteCard = ({ note, ind }: NoteCardProps) => {
       }}
     >
       <CardContent
-        onClick={() => handleClick(ind)}
+        onClick={handleClick}
         sx={{
           // border: "1px solid gray",
           borderRadius: "2px",
@@ -55,8 +76,8 @@ const NoteCard = ({ note, ind }: NoteCardProps) => {
           Tags
         </Typography>
         <Typography variant="h6" component="div" noWrap={true}>
-          {note.tags.map((tag) => {
-            return <Chip label={tag} />;
+          {note.tags.map((tag, index) => {
+            return <Chip label={tag} key={index} />;
           })}
         </Typography>
         <CardActions sx={{ marginTop: "2em", justifyContent: "space-between" }}>
@@ -70,29 +91,7 @@ const NoteCard = ({ note, ind }: NoteCardProps) => {
           >
             Edit
           </Button>
-          <Button
-            size="small"
-            color="error"
-            onClick={(e) => {
-              e.stopPropagation();
-              const ans = confirm("Are you sure about this deletion?");
-              if (ans) {
-                const toastId = toast.loading(
-                  "Please wait, while we are deleting this note...",
-                );
-                setNotes((currNotes: NoteDataType[]) => {
-                  const new_notes = [...currNotes];
-                  new_notes.splice(ind, 1);
-                  return new_notes;
-                });
-                setTimeout(() => {
-                  toast.dismiss(toastId);
-                  toast.success("Successfully deleted !");
-                  navigate(0);
-                }, 2000);
-              }
-            }}
-          >
+          <Button size="small" color="error" onClick={(e) => handleDelete(e)}>
             Delete
           </Button>
         </CardActions>

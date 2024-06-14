@@ -46,7 +46,11 @@ export const logInController = async (
             expiresIn: "1y",
           },
         );
-        return res.status(200).json({ access_token, refresh_token });
+        res.cookie("refresh_token", refresh_token, {
+          maxAge: 1000 * 60 * 10000,
+          httpOnly: true,
+        });
+        return res.status(200).json({ access_token });
       }
     }
   } catch (e) {
@@ -59,9 +63,10 @@ export const RefreshAccessTokenController = async (
   req: Request,
   res: Response,
 ) => {
-  const RT = req.headers["x-refresh"] || "";
+  const RT = req.cookies.refresh_token || "";
   //Decode the RT and get the id
   if (!RT) {
+    console.log("Refresh token MISSING");
     res.status(403).send("Forbidden").end();
     return;
   }
@@ -77,10 +82,12 @@ export const RefreshAccessTokenController = async (
       const user = await UserModel.findById(id);
 
       if (!user) {
+        console.log("Refresh token's user is no longer with us");
         res.status(403).send("Forbidden").end();
         return;
       }
       if (!user?.verified) {
+        console.log("Refresh token's user is not verified");
         res.status(403).send("Forbidden").end();
         return;
       }
@@ -96,5 +103,10 @@ export const RefreshAccessTokenController = async (
     return;
   }
 
+  res.send(200);
+};
+
+export const LogoutController = (req: Request, res: Response) => {
+  res.clearCookie("refresh_token", { httpOnly: true });
   res.send(200);
 };

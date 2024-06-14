@@ -18,8 +18,11 @@ import { LoginService } from "../services/authServices";
 import toast from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import ActionButtons from "../components/ActionButtons";
+import { useDispatch } from "react-redux";
+import { setAccessToken } from "../redux-store/reducers/AccessTokenSlice";
+import { Checkbox, FormControlLabel } from "@mui/material";
+import useLocalStorage from "../shared/useLocalStorage";
 
 const loginSchema = z.object({
   email: z.string({ required_error: "Email is required" }).email(),
@@ -29,22 +32,36 @@ const loginSchema = z.object({
 type LoginType = z.infer<typeof loginSchema>;
 
 export default function Login() {
+  const [checked, setChecked] = React.useState(true);
+  const [_isPersistent, setIsPersistent] = useLocalStorage<boolean>(
+    "persistent",
+    true,
+  );
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChecked(event.target.checked);
+    setIsPersistent((prev) => {
+      console.log(prev);
+      return event.target.checked;
+    });
+  };
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<LoginType>({ resolver: zodResolver(loginSchema) });
+
   const navigate = useNavigate();
-  const [_cookies, setCookie] = useCookies();
+  const dispatch = useDispatch();
   const onSubmit: SubmitHandler<LoginType> = async (data) => {
     // call the backend
     try {
       const resp = await LoginService(data);
       if (resp.code === 200) {
-        // set cookies
-        setCookie("access_token", resp.data.access_token, { path: "/" });
-        setCookie("refresh_token", resp.data.refresh_token, { path: "/" });
-        navigate("/");
+        // we will be getting AT and RT. RT is already handled by the backend and saved as a HTTPOnly cookie.
+        // But for AT we need to save this in Redux store So that protectedRoute can check it first
+        dispatch(setAccessToken(resp.data?.access_token));
+        navigate("/", { replace: true });
       } else {
         toast.error(resp.error_msg);
       }
@@ -103,7 +120,16 @@ export default function Login() {
             id="password"
             autoComplete="current-password"
           />
-
+          <FormControlLabel
+            label="Remember me"
+            control={
+              <Checkbox
+                checked={checked}
+                onChange={handleChange}
+                inputProps={{ "aria-label": "controlled" }}
+              />
+            }
+          />
           <Button
             type="submit"
             fullWidth

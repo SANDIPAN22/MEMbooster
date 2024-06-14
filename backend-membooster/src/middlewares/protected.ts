@@ -7,7 +7,8 @@ export default async (req: Request, res: Response, next: NextFunction) => {
 
   // if access token is missing then this request is forbidden
   if (!AT) {
-    return res.status(403).send("Forbidden").end();
+    console.log("AT missing !!!!");
+    return res.status(401).send("Unauthorized").end();
   }
   try {
     const decodedPayload = verifyJwt(AT, "ACCESS_TOKEN_PUBLIC_KEY");
@@ -21,9 +22,11 @@ export default async (req: Request, res: Response, next: NextFunction) => {
       e.name &&
       e.name === "TokenExpiredError"
     ) {
-      res.status(410).send("Access Token is expired").end();
+      console.log("AT Expired....");
+      res.status(401).send("Access Token is expired").end();
       return;
     }
+    console.log("forbidden to access protected API for any reason.");
     res.status(403).send("Forbidden").end();
     return;
   }
