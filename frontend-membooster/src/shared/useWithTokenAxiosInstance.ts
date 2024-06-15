@@ -71,7 +71,7 @@ const useWithTokenAxiosInstance = () => {
       API.interceptors.request.eject(reqInterceptors);
       API.interceptors.response.eject(resInterceptors);
     };
-  }, [setAndGetAccessToken, accessToken]);
+  });
   return API;
 };
 

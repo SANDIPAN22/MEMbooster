@@ -34,7 +34,7 @@ const NewNote = () => {
         { path: `/new_note`, name: `NEW NOTE` },
       ]),
     );
-  }, [dispatch]);
+  });
   return (
     <>
       <ActionButtons />

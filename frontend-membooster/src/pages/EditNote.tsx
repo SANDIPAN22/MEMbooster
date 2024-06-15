@@ -40,7 +40,7 @@ const EditTask = () => {
         setLoading(false);
       }
     })();
-  }, [getNote, id]);
+  });
 
   useEffect(() => {
     // set Title using reducer action dispatch
@@ -53,7 +53,7 @@ const EditTask = () => {
         { path: `/note/${id}/edit`, name: `EDIT NOTE - ${id}` },
       ]),
     );
-  }, [dispatch, note, id]);
+  });
 
   const handleEdit = async (e: FormEvent) => {
     e.preventDefault();

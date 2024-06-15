@@ -44,7 +44,7 @@ const ProtectedRoute = () => {
         disableLoading();
       }
     })();
-  }, [isPersistent, setAndGetAccessToken]);
+  });
 
   if (loading) {
     return <Loader></Loader>;

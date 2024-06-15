@@ -47,5 +47,5 @@
     "typescript": "^5.2.2",
     "vite": "^5.2.0"
   },
-  "HOST": "https://membooster.onrender.com"
+  "HOST": "http://localhost:8000"
 }

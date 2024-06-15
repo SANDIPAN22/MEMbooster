@@ -24,7 +24,7 @@ function useLocalStorage<T>(
     } catch (e) {
       console.log("Error while setting the data");
     }
-  }, [val, key]);
+  });
 
   return [val, setVal];
 }
