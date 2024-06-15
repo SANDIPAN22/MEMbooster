@@ -40,7 +40,7 @@ const EditTask = () => {
         setLoading(false);
       }
     })();
-  });
+  }, []); // eslint-disable-line
 
   useEffect(() => {
     // set Title using reducer action dispatch
@@ -53,7 +53,7 @@ const EditTask = () => {
         { path: `/note/${id}/edit`, name: `EDIT NOTE - ${id}` },
       ]),
     );
-  });
+  }, []); // eslint-disable-line
 
   const handleEdit = async (e: FormEvent) => {
     e.preventDefault();

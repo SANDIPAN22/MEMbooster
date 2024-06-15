@@ -21,6 +21,7 @@ const ProtectedRoute = () => {
   };
   useEffect(() => {
     (async () => {
+      console.log("Persisting logic status=", isPersistent);
       if (isPersistent) {
         console.log(
           "persist flag is ON, So using Layout Effect to pre-fetch the access token and then allow protected routes",
@@ -44,7 +45,7 @@ const ProtectedRoute = () => {
         disableLoading();
       }
     })();
-  });
+  }, []); // eslint-disable-line
 
   if (loading) {
     return <Loader></Loader>;

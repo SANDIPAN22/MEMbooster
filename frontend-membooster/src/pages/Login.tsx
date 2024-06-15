@@ -32,16 +32,15 @@ const loginSchema = z.object({
 type LoginType = z.infer<typeof loginSchema>;
 
 export default function Login() {
-  const [checked, setChecked] = React.useState(true);
-  const [_isPersistent, setIsPersistent] = useLocalStorage<boolean>(
+  const [isPersistent, setIsPersistent] = useLocalStorage<boolean>(
     "persistent",
     true,
   );
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked(event.target.checked);
-    setIsPersistent((prev) => {
-      console.log(prev);
-      return event.target.checked;
+    const checkVal = event.target.checked;
+
+    setIsPersistent(() => {
+      return checkVal;
     });
   };
 
@@ -124,7 +123,7 @@ export default function Login() {
             label="Remember me"
             control={
               <Checkbox
-                checked={checked}
+                checked={isPersistent}
                 onChange={handleChange}
                 inputProps={{ "aria-label": "controlled" }}
               />

@@ -25,7 +25,7 @@ const ShowTask = () => {
         "<div >Editing is disabled as you are in 'view' mode. </div>";
       toolBar.style.opacity = "0.5";
     }
-  });
+  }, []); // eslint-disable-line
 
   const dispatch = useDispatch();
 
@@ -48,7 +48,7 @@ const ShowTask = () => {
         setLoading(false);
       }
     })();
-  });
+  }, []); // eslint-disable-line
 
   useEffect(() => {
     // set Title using reducer action dispatch
@@ -61,7 +61,7 @@ const ShowTask = () => {
         { path: `/note/${id}`, name: `NOTE - ${id}` },
       ]),
     );
-  });
+  }, []); // eslint-disable-line
 
   if (loading) {
     return <div>Loading...</div>;

@@ -34,7 +34,7 @@ const NewNote = () => {
         { path: `/new_note`, name: `NEW NOTE` },
       ]),
     );
-  });
+  }, []); // eslint-disable-line
   return (
     <>
       <ActionButtons />
