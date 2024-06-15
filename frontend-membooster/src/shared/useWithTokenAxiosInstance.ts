@@ -5,7 +5,7 @@ import useRefreshToken from "./useRefreshToken";
 import { useEffect } from "react";
 import { RootState } from "../redux-store/CentralStore";
 
-import { HOST } from "../../package.json";
+const HOST = import.meta.env.VITE_BACKEND_HOST_NAME;
 
 // This axios instance is used to communicate with protected paths ONLY (added advantage is every request will contain Access_token
 // and every response will handle two cases 1. if 401 then retry with new AT and if 403 then redirect to login via logout)
