@@ -44,7 +44,7 @@ const Dashboard = () => {
 
     // set the breadcrumbs using the action Dispatch inside rootTemplate
     dispatch(setBreadcrumbs([{ path: "/", name: "home" }]));
-  });
+  }, []); // eslint-disable-line
 
   // useEffect to fetch all the notes from the backend
   const { getNotes } = useNoteServices();
@@ -64,7 +64,7 @@ const Dashboard = () => {
       }
     };
     fetchNotes();
-  });
+  }, []); // eslint-disable-line
 
   return (
     <>
