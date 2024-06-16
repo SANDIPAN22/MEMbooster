@@ -67,7 +67,7 @@ export const RefreshAccessTokenController = async (
   //Decode the RT and get the id
   if (!RT) {
     console.log("Refresh token MISSING");
-    res.status(403).send("Forbidden").end();
+    res.status(403).send("Forbidden-no-RT").end();
     return;
   }
   try {
@@ -83,12 +83,12 @@ export const RefreshAccessTokenController = async (
 
       if (!user) {
         console.log("Refresh token's user is no longer with us");
-        res.status(403).send("Forbidden").end();
+        res.status(403).send("Forbidden-no-user").end();
         return;
       }
       if (!user?.verified) {
-        console.log("Refresh token's user is not verified");
-        res.status(403).send("Forbidden").end();
+        console.log("Refresh token's user is not email verified");
+        res.status(403).send("Forbidden-not-email-verified").end();
         return;
       }
       // got a genuine user now create a new access token using the user
@@ -99,7 +99,7 @@ export const RefreshAccessTokenController = async (
     }
   } catch (e) {
     console.error("Error occurred while refreshing the token::", e);
-    res.status(403).send("Forbidden").end();
+    res.status(403).send("Forbidden-other-error").end();
     return;
   }
 
