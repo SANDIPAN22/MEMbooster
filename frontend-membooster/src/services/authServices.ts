@@ -1,5 +1,5 @@
 import axios from "axios";
-import { HOST } from "../../package.json";
+const HOST = import.meta.env.VITE_BACKEND_HOST;
 
 interface SignInServiceProps {
   name: string;
