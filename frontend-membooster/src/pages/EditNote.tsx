@@ -53,7 +53,7 @@ const EditTask = () => {
         { path: `/note/${id}/edit`, name: `EDIT NOTE - ${id}` },
       ]),
     );
-  }, []); // eslint-disable-line
+  }, [loading, note, id]); // eslint-disable-line
 
   const handleEdit = async (e: FormEvent) => {
     e.preventDefault();
