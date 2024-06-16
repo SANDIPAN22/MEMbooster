@@ -49,6 +49,7 @@ export const logInController = async (
         res.cookie("refresh_token", refresh_token, {
           maxAge: 1000 * 60 * 10000,
           httpOnly: true,
+          sameSite: false,
         });
         return res.status(200).json({ access_token });
       }
