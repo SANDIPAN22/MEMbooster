@@ -38,7 +38,7 @@ export default function Login() {
   );
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const checkVal = event.target.checked;
-
+    console.log(import.meta.env);
     setIsPersistent(() => {
       return checkVal;
     });
