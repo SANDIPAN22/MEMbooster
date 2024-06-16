@@ -92,6 +92,12 @@ const Signup = () => {
         setOpen(true);
       } else {
         toast.error(resp.error_msg);
+        if (
+          resp.error_msg ===
+          "Um! The account is already present but email is not yet verified."
+        ) {
+          setOpen(true);
+        }
       }
     } catch (err) {
       toast.error("Sign Up failed.");

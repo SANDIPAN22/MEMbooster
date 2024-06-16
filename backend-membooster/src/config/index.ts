@@ -15,4 +15,3 @@ export const KEYS = {
   REFRESH_TOKEN_PUBLIC_KEY: process.env.REFRESH_TOKEN_PUBLIC_KEY || "",
 };
 export const ALLOWED_ORIGINS = JSON.parse(process.env.ALLOWED_ORIGINS || "");
-export const COOKIE_DOMAIN = process.env.COOKIE_DOMAIN;

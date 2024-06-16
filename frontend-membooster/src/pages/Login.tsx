@@ -36,6 +36,10 @@ export default function Login() {
     "persistent",
     true,
   );
+  const [_refreshToken, setRefreshToken] = useLocalStorage<string>(
+    "refresh_token",
+    "default",
+  );
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const checkVal = event.target.checked;
     console.log(import.meta.env);
@@ -57,14 +61,22 @@ export default function Login() {
     try {
       const resp = await LoginService(data);
       if (resp.code === 200) {
-        // we will be getting AT and RT. RT is already handled by the backend and saved as a HTTPOnly cookie.
-        // But for AT we need to save this in Redux store So that protectedRoute can check it first
+        // we will be getting AT and RT
+        console.log(resp);
         dispatch(setAccessToken(resp.data?.access_token));
-        navigate("/", { replace: true });
+
+        setRefreshToken(resp.data?.refresh_token);
+        const toastId = toast.loading("Logging you in...");
+        setTimeout(() => {
+          toast.dismiss(toastId);
+
+          navigate("/", { replace: true });
+        }, 2000);
       } else {
         toast.error(resp.error_msg);
       }
     } catch (err) {
+      console.error(err);
       toast.error("Unable to login...");
     }
   };

@@ -3,7 +3,6 @@ import { CreateSessionSchemaType } from "../schemas/session.schema";
 import UserModel from "../models/users.model";
 import { signJwt, verifyJwt } from "../utils/jwt";
 import { JwtPayload } from "jsonwebtoken";
-import { COOKIE_DOMAIN } from "../config";
 
 export const logInController = async (
   req: Request<unknown, unknown, CreateSessionSchemaType>,
@@ -44,15 +43,11 @@ export const logInController = async (
           { id: user._id },
           "REFRESH_TOKEN_PRIVATE_KEY",
           {
-            expiresIn: "1y",
+            expiresIn: "1d",
           },
         );
-        res.cookie("refresh_token", refresh_token, {
-          maxAge: 1000 * 60 * 10000,
-          httpOnly: true,
-          domain: COOKIE_DOMAIN,
-        });
-        return res.status(200).json({ access_token });
+
+        return res.status(200).json({ access_token, refresh_token });
       }
     }
   } catch (e) {
@@ -65,7 +60,7 @@ export const RefreshAccessTokenController = async (
   req: Request,
   res: Response,
 ) => {
-  const RT = req.cookies.refresh_token || "";
+  const RT = req.body.refresh_token;
   //Decode the RT and get the id
   if (!RT) {
     console.log("Refresh token MISSING");
@@ -109,6 +104,5 @@ export const RefreshAccessTokenController = async (
 };
 
 export const LogoutController = (req: Request, res: Response) => {
-  res.clearCookie("refresh_token", { httpOnly: true });
   res.send(200);
 };

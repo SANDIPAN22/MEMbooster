@@ -25,6 +25,18 @@ export const createUserController = async (
     res.status(201).json({ temp_id: resp._id });
   } catch (e: any) {
     if (e.code === 11000) {
+      // get and check the user's email is verified, or not
+      const user = await UserModel.findOne({ email: data.email });
+      // if not verified then send the below error message so that user can enter the OTP
+      if (!user?.verified) {
+        res
+          .status(409)
+          .send(
+            "Um! The account is already present but email is not yet verified.",
+          );
+        return;
+      }
+      //if verified then
       res.status(409).send("Um! The account is already present");
     } else {
       res.status(500).send(e);

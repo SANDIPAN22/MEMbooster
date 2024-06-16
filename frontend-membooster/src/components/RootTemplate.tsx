@@ -6,10 +6,14 @@ import toast, { Toaster } from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux-store/CentralStore";
 import { useEffect } from "react";
-import { LogoutService } from "../services/authServices";
+import useLocalStorage from "../shared/useLocalStorage";
 
 const RootTemplate = () => {
   const title = useSelector((state: RootState) => state.title.val);
+  const [_refreshToken, setRefreshToken] = useLocalStorage(
+    "refresh_token",
+    "default",
+  );
   const breadcrumbs = useSelector(
     (state: RootState) => state.breadcrumbs.values,
   );
@@ -23,8 +27,12 @@ const RootTemplate = () => {
   const navigate = useNavigate();
   const logOutHandler = async () => {
     try {
-      await LogoutService();
-      navigate("/login");
+      setRefreshToken("logout_token");
+      const toastId = toast.loading("Logging you out...");
+      setTimeout(() => {
+        toast.dismiss(toastId);
+        navigate("/login");
+      }, 2000);
     } catch (err) {
       toast.error("Failed to logout.");
     }

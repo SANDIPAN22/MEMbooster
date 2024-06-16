@@ -1,21 +1,20 @@
 import { useDispatch } from "react-redux";
 import { setAccessToken } from "../redux-store/reducers/AccessTokenSlice";
 import axios from "axios";
+import useLocalStorage from "./useLocalStorage";
 const HOST = import.meta.env.VITE_BACKEND_HOST;
 
 const useRefreshToken = () => {
   const dispatch = useDispatch();
-
+  const [refreshToken, _setRefreshToken] = useLocalStorage(
+    "refresh_token",
+    "default",
+  );
   const setAndGetAccessToken = async (): Promise<string> => {
     try {
-      // it is going to send the refresh token from HTTPOnly cookie hence we need to enable withCredentials mode ON
-      const resp = await axios.post(
-        `${HOST}/api/auth/refresh_access_token`,
-        {},
-        {
-          withCredentials: true,
-        },
-      );
+      const resp = await axios.post(`${HOST}/api/auth/refresh_access_token`, {
+        refresh_token: refreshToken,
+      });
 
       console.log("New Token==>", resp.data.access_token);
       // store the new access token in Redux store

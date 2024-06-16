@@ -12,7 +12,6 @@ const HOST = import.meta.env.VITE_BACKEND_HOST;
 const API = axios.create({
   baseURL: HOST,
   headers: { "Content-Type": "application/json" },
-  // withCredentials: true
 });
 
 const useWithTokenAxiosInstance = () => {
@@ -45,7 +44,7 @@ const useWithTokenAxiosInstance = () => {
         console.log("Retrying....", error);
         const originalRequest = error.config;
         // when a protected path returns 401 that means either access token is expired or not included,
-        // hence retrying to get a new access token using the refresh token store in the HTTPonly cookie
+        // hence retrying to get a new access token using the refresh token
         if (error.request.status == 401 && !originalRequest._retry) {
           console.log("GOT 401, HENCE trying to get NEW AT using RT");
           originalRequest._retry = true;

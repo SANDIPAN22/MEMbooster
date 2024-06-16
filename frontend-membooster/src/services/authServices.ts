@@ -62,10 +62,7 @@ export const OtpVerificationService = async (payload: SignupPayloadProps) => {
 
 export const LoginService = async (payload: LoginPayloadProps) => {
   try {
-    // here withCredentials is needed as it is going to set the refresh Token, no other api is doing this
-    const resp = await axios.post(`${HOST}/api/auth/login`, payload, {
-      withCredentials: true,
-    });
+    const resp = await axios.post(`${HOST}/api/auth/login`, payload);
     return { status: "success", data: resp.data, code: resp.request?.status };
   } catch (err) {
     // special error case handle
@@ -131,7 +128,7 @@ export const ResetPasswordService = async (
 
 export const LogoutService = async () => {
   try {
-    axios.post(`${HOST}/api/auth/logout`, {}, { withCredentials: true });
+    axios.post(`${HOST}/api/auth/logout`);
   } catch (err) {
     console.error("Error at Logout service:: ", err);
     throw err;

@@ -14,7 +14,7 @@ function useLocalStorage<T>(
         return JSON.parse(data);
       }
     } catch (e) {
-      console.error("Error while fetch the data from the local storage");
+      console.error("Error while fetch the data from the local storage:: ", e);
     }
   });
 

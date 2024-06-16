@@ -12,6 +12,7 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
+  DialogProps,
   DialogTitle,
   InputAdornment,
   Link,
@@ -32,7 +33,10 @@ const ForgotPassword = () => {
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const handleClose: DialogProps["onClose"] = (event, reason) => {
+    if (reason && reason === "backdropClick") {
+      return;
+    }
     setOpen(false);
   };
 
@@ -95,7 +99,12 @@ const ForgotPassword = () => {
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <Chip label="Send OTP" onClick={handleOtpGenerate}></Chip>
+                  <Chip
+                    label="Send OTP"
+                    onClick={handleOtpGenerate}
+                    sx={{ m: 2 }}
+                  ></Chip>
+                  <Chip label="Verify OTP" onClick={handleClickOpen}></Chip>
                 </InputAdornment>
               ),
             }}
@@ -134,7 +143,7 @@ const ForgotPassword = () => {
                 } catch (err) {
                   toast.error("Sorry, reset password process failed!");
                 } finally {
-                  handleClose();
+                  setOpen(false);
                 }
               }
             },
@@ -175,7 +184,7 @@ const ForgotPassword = () => {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
+            <Button onClick={() => setOpen(false)}>Cancel</Button>
             <Button type="submit">Reset</Button>
           </DialogActions>
         </Dialog>
