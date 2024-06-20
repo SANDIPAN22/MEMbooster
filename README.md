@@ -1,14 +1,14 @@
-# Advanced Note-Taking Application
+# Advanced Note-Taking Application with Real-time Collaboration and editing
 
 An advanced note-taking application built using the MERN stack (MongoDB, Express.js, React.js, Node.js) with TypeScript. This application includes features such as authentication, rich text editing, tagging, and more.
 
 
 ## Features
-
+- Users can share the notes with their friends/families/ colleagues and do live editing together
 - User Authentication (JWT & RSA) with access and refresh token
 - Forgot password, email verification setup, persistent /non-persistent login
 - Create, Read, Update, Delete (CRUD) Notes
-- Rich Text Editing
+- Rich Text Editing with web socket technology 
 - Tagging and Filtering Notes
 - Responsive Design with Material UI with dark and light theme switching
 - Type-safe code with TypeScript with custom react hooks
