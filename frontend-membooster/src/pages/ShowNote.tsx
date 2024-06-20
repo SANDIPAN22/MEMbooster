@@ -12,8 +12,8 @@ import TextEditor from "../components/TextEditor";
 import toast from "react-hot-toast";
 import useNoteServices from "../services/useNoteServices";
 
-const ShowTask = () => {
-  const { getNote } = useNoteServices();
+const ShowTask = ({ collabMode = false }: { collabMode?: boolean }) => {
+  const { getNote, getNoteAsCollaborator } = useNoteServices();
   const [note, setNote] = useState<NoteDataType>();
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -37,7 +37,9 @@ const ShowTask = () => {
     const toastId = toast.loading("Fetching and loading the note...");
     (async () => {
       try {
-        const resp = await getNote({ params: { noteId: id || "" } });
+        const resp = collabMode
+          ? await getNoteAsCollaborator({ params: { noteId: id || "" } })
+          : await getNote({ params: { noteId: id || "" } });
 
         setNote(resp.note);
       } catch (err) {
@@ -68,6 +70,7 @@ const ShowTask = () => {
   }
   return (
     <>
+      {console.log("COLLAB MOOODEE", collabMode)}
       {!note ? (
         <Navigate to={"/"} />
       ) : (

@@ -7,7 +7,6 @@ import { setTitle } from "../redux-store/reducers/TitleSlice";
 import { setBreadcrumbs } from "../redux-store/reducers/BreadcrumbsSlice";
 import { useEffect } from "react";
 import useNoteServices from "../services/useNoteServices";
-import ActionButtons from "../components/ActionButtons";
 
 const NewNote = () => {
   const { postNote } = useNoteServices();
@@ -37,7 +36,7 @@ const NewNote = () => {
   }, []); // eslint-disable-line
   return (
     <>
-      <ActionButtons />
+      {/* <ActionButtons /> */}
       <NoteForm saveNote={saveNote} />
     </>
   );

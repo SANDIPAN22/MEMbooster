@@ -55,10 +55,16 @@ const NoteForm = ({ saveNote }: NoteFormProps) => {
         <Box mt={3}>
           <TextEditor text={text} readOnly={false} setText={setText} />
         </Box>
-        <Stack direction="row" spacing={2} mt={3} justifyContent={"end"}>
+        <Stack
+          direction="row"
+          spacing={2}
+          mt={3}
+          justifyContent={"end"}
+          // sx={{ position: "fixed", left: "83%", top: "88%" }}
+        >
           <Link to="..">
             <Button variant="outlined" startIcon={<DeleteIcon />}>
-              CANCEL
+              DISCARD
             </Button>
           </Link>
           <Button variant="contained" endIcon={<SendIcon />} type="submit">

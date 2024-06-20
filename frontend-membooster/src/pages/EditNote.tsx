@@ -4,7 +4,6 @@ import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { NoteDataType } from "../shared/commonTypes";
 import { setTitle } from "../redux-store/reducers/TitleSlice";
 import { setBreadcrumbs } from "../redux-store/reducers/BreadcrumbsSlice";
-import ActionButtons from "../components/ActionButtons";
 import { Box, Button, Chip, Stack, TextField } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
@@ -12,7 +11,7 @@ import toast from "react-hot-toast";
 import TextEditor from "../components/TextEditor";
 import useNoteServices from "../services/useNoteServices";
 
-const EditTask = () => {
+const EditTask = ({ collabMode = false }: { collabMode?: boolean }) => {
   const [text, setText] = useState<string>("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -20,7 +19,12 @@ const EditTask = () => {
   const TagsRef = useRef<HTMLInputElement>(null);
   const [note, setNote] = useState<NoteDataType>();
   const [loading, setLoading] = useState(true);
-  const { updateNote, getNote } = useNoteServices();
+  const {
+    updateNote,
+    getNote,
+    updateNoteAsCollaborator,
+    getNoteAsCollaborator,
+  } = useNoteServices();
   // get the params
   const { id } = useParams();
 
@@ -29,7 +33,9 @@ const EditTask = () => {
     const toastId = toast.loading("Fetching and loading the note...");
     (async () => {
       try {
-        const resp = await getNote({ params: { noteId: id || "" } });
+        const resp = collabMode
+          ? await getNoteAsCollaborator({ params: { noteId: id || "" } })
+          : await getNote({ params: { noteId: id || "" } });
         setText(resp.note.markdown);
         setNote(resp.note);
       } catch (err) {
@@ -69,10 +75,15 @@ const EditTask = () => {
         "Please wait, while we are editing this note...",
       );
       try {
-        await updateNote({
-          body: currentNoteData,
-          params: { noteId: id || "" },
-        });
+        collabMode
+          ? await updateNoteAsCollaborator({
+              body: currentNoteData,
+              params: { noteId: id || "" },
+            })
+          : await updateNote({
+              body: currentNoteData,
+              params: { noteId: id || "" },
+            });
 
         navigate("/");
       } catch (err) {
@@ -102,7 +113,7 @@ const EditTask = () => {
               />
             ))}
           </Stack>
-
+          {/* <SpeedDial /> */}
           <form onSubmit={handleEdit}>
             <Box mt={5} display={"flex"} justifyContent={"space-between"}>
               <TextField
@@ -131,20 +142,27 @@ const EditTask = () => {
             <Box mt={3}>
               <TextEditor text={text} readOnly={false} setText={setText} />
             </Box>
-            <Stack direction="row" spacing={2} mt={3} justifyContent={"end"}>
+
+            <Stack
+              direction="row"
+              spacing={2}
+              mt={3}
+              justifyContent={"end"}
+              // sx={{ position: "fixed", left: "80%", top: "88%" }}
+            >
               <Link to="/">
                 <Button variant="outlined" startIcon={<DeleteIcon />}>
-                  CANCEL
+                  DISCARD
                 </Button>
               </Link>
               <Button variant="contained" endIcon={<SendIcon />} type="submit">
                 SAVE
               </Button>
+              {/* <ActionButtons /> */}
             </Stack>
           </form>
         </>
       )}
-      <ActionButtons />
     </>
   );
 };

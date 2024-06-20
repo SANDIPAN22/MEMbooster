@@ -60,7 +60,9 @@ const RootTemplate = () => {
           )}
         </Box>
 
-        <Typography variant="h2">{title}</Typography>
+        <Typography sx={{ m: 1, fontSize: { xs: 20, sm: 50 } }}>
+          {title}
+        </Typography>
         <Outlet />
       </MyContainer>
     </>

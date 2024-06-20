@@ -20,6 +20,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "./redux-store/CentralStore";
 import "./assets/common.css";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ShowCollabNote from "./pages/ShowCollabNote";
+import EditCollabNote from "./pages/EditCollabNote";
 
 const App = () => {
   const bgTheme = useSelector((state: RootState) => state.bgTheme.color);
@@ -45,6 +47,14 @@ const App = () => {
                   <Route index element={<ShowTask />} />
                   <Route path="edit" element={<EditTask />} />
                 </Route>
+                <Route
+                  path="/my/collab/note/:id"
+                  element={<ShowCollabNote />}
+                ></Route>
+                <Route
+                  path="/my/collab/note/:id/edit"
+                  element={<EditCollabNote />}
+                ></Route>
                 <Route path="new_note" element={<NewNote />}></Route>
               </Route>
             </Route>

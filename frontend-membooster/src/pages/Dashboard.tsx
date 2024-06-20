@@ -46,8 +46,8 @@ const Dashboard = () => {
     dispatch(setBreadcrumbs([{ path: "/", name: "home" }]));
   }, []); // eslint-disable-line
 
-  // useEffect to fetch all the notes from the backend
-  const { getNotes } = useNoteServices();
+  // useEffect to fetch all the notes (own + Collab) from the backend
+  const { getNotes, getAllNotesAsCollaborator } = useNoteServices();
   const [fetchingNotes, setFetchingNotes] = useState<boolean>(false);
   useEffect(() => {
     const fetchNotes = async () => {
@@ -55,7 +55,7 @@ const Dashboard = () => {
       try {
         const resp = await getNotes();
 
-        setNotes(resp.notes);
+        setNotes((prev) => [...prev, ...resp.notes]);
       } catch (err) {
         console.error("Error at Dashboard::", err);
         toast.error("Facing issue in fetching notes...");
@@ -64,6 +64,26 @@ const Dashboard = () => {
       }
     };
     fetchNotes();
+  }, []); // eslint-disable-line
+  useEffect(() => {
+    const fetchCollabNotes = async () => {
+      setFetchingNotes(true);
+      try {
+        const resp = await getAllNotesAsCollaborator();
+
+        const sharedNotes = resp.notes.map((note: object) => {
+          return { ...note, shared: true };
+        });
+
+        setNotes((prev) => [...prev, ...sharedNotes]);
+      } catch (err) {
+        console.error("Error at Dashboard::", err);
+        toast.error("Facing issue in fetching notes...");
+      } finally {
+        setFetchingNotes(false);
+      }
+    };
+    fetchCollabNotes();
   }, []); // eslint-disable-line
 
   return (
@@ -113,7 +133,9 @@ const Dashboard = () => {
         </Box>
       )}
       {notes.length > 0 ? (
-        <RenderAllNotes notes={notes} filters={filters}></RenderAllNotes>
+        <>
+          <RenderAllNotes notes={notes} filters={filters}></RenderAllNotes>
+        </>
       ) : (
         <Box
           display={"flex"}

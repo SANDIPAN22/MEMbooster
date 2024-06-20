@@ -31,6 +31,15 @@ interface GetNoteProps {
   };
 }
 
+interface CollaboratorProps {
+  params: {
+    noteId: string;
+  };
+  body: {
+    email: string;
+  };
+}
+
 const useNoteServices = () => {
   const API = useWithTokenAxiosInstance(); // custom axios instance with interceptors added
   const getNotes = async () => {
@@ -93,7 +102,81 @@ const useNoteServices = () => {
     }
   };
 
-  return { getNotes, deleteNote, updateNote, postNote, getNote };
+  const addCollaborator = async (payload: CollaboratorProps) => {
+    try {
+      const resp = await API.put(
+        `/api/note/add/collab/${payload.params.noteId}`,
+        payload.body,
+      );
+      return resp.data;
+    } catch (err) {
+      console.error("Error at addCollaborator::", err);
+      throw err;
+    }
+  };
+
+  const deleteCollaborator = async (payload: CollaboratorProps) => {
+    try {
+      const resp = await API.put(
+        `/api/note/delete/collab/${payload.params.noteId}`,
+        payload.body,
+      );
+      return resp.data;
+    } catch (err) {
+      console.error("Error at deleteCollaborator::", err);
+      throw err;
+    }
+  };
+
+  const updateNoteAsCollaborator = async (payload: UpdateNoteProps) => {
+    try {
+      const response = await API.put(
+        `/api/note/my/collab/${payload.params.noteId}`,
+        payload.body,
+      );
+
+      return response.data;
+    } catch (err) {
+      console.error("Error at updateNote::", err);
+      throw err;
+    }
+  };
+  const getAllNotesAsCollaborator = async () => {
+    try {
+      const response = await API.get("/api/note/my/collab");
+
+      return response.data;
+    } catch (err) {
+      console.error("Error at getNotes::", err);
+      throw err;
+    }
+  };
+
+  const getNoteAsCollaborator = async (payload: GetNoteProps) => {
+    try {
+      const response = await API.get(
+        `/api/note/my/collab/${payload.params.noteId}`,
+      );
+      console.log("GOT a note", response.data);
+      return response.data;
+    } catch (err) {
+      console.error("Error at getNote::", err);
+      throw err;
+    }
+  };
+
+  return {
+    getNotes,
+    deleteNote,
+    updateNote,
+    postNote,
+    getNote,
+    addCollaborator,
+    deleteCollaborator,
+    updateNoteAsCollaborator,
+    getAllNotesAsCollaborator,
+    getNoteAsCollaborator,
+  };
 };
 
 export default useNoteServices;

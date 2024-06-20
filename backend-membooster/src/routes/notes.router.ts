@@ -5,10 +5,18 @@ import {
   getNote,
   deleteNote,
   updateNote,
+  addCollaborator,
+  deleteCollaborator,
+  getAllNotesAsCollaborator,
+  updateNoteAsCollaborator,
+  getNoteAsCollaborator,
 } from "../controllers/notes.controller";
 import protectedPath from "../middlewares/protected";
 import validateRequest from "../middlewares/validateResources";
-import { noteSchemaObj } from "../schemas/note.schema";
+import {
+  manageNoteCollaboratorsObj,
+  noteSchemaObj,
+} from "../schemas/note.schema";
 
 const router = express.Router();
 
@@ -22,5 +30,27 @@ router.put(
   validateRequest(noteSchemaObj),
   updateNote,
 );
+// collaboration routes
+router.put(
+  "/add/collab/:noteId",
+  protectedPath,
+  validateRequest(manageNoteCollaboratorsObj),
+  addCollaborator,
+);
+router.put(
+  "/delete/collab/:noteId",
+  protectedPath,
+  validateRequest(manageNoteCollaboratorsObj),
+  deleteCollaborator,
+);
 
+router.get("/my/collab", protectedPath, getAllNotesAsCollaborator);
+
+router.put(
+  "/my/collab/:noteId",
+  protectedPath,
+  validateRequest(noteSchemaObj),
+  updateNoteAsCollaborator,
+);
+router.get("/my/collab/:noteId", protectedPath, getNoteAsCollaborator);
 export default router;

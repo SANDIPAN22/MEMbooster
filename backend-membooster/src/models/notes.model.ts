@@ -14,6 +14,9 @@ export class Note {
   @prop({ required: true })
   title: string;
 
+  @prop()
+  collaborators: string[];
+
   @prop({ default: "1d" })
   period: string;
 

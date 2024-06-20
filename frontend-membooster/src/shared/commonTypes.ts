@@ -3,4 +3,6 @@ export interface NoteDataType {
   tags: string[];
   markdown: string;
   _id?: string;
+  collaborators?: string[];
+  shared?: boolean;
 }

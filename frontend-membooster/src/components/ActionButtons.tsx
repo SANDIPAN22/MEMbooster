@@ -8,8 +8,9 @@ const ActionButtons = () => {
       sx={{
         "& > :not(style)": { m: 1 },
         position: "fixed",
-        left: "45%",
-        top: "90%",
+        left: { xs: "30%", sm: "45%" },
+        top: { xs: "90%", sm: "90%" },
+        zIndex: 1,
       }}
     >
       <Fab
