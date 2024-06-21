@@ -17,8 +17,9 @@ export class Note {
   @prop()
   collaborators: string[];
 
-  @prop({ default: "1d" })
-  period: string;
+  // all the notes will be deleted after 15 days of creation (constraint of free version)
+  @prop({ default: Date.now, expires: 1296000 })
+  entryTimestamp: Date;
 
   @prop({ default: false })
   revisionFlag: boolean;

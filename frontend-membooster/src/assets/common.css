@@ -6,3 +6,7 @@
   border-radius: 8px;
   text-align: center;
 }
+.ql-editor {
+  min-height: 45vh;
+  font-size: large;
+}

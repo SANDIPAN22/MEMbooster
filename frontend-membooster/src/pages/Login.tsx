@@ -23,6 +23,7 @@ import { useDispatch } from "react-redux";
 import { setAccessToken } from "../redux-store/reducers/AccessTokenSlice";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import useLocalStorage from "../shared/useLocalStorage";
+import MySnackBar from "../components/MySnackBar";
 
 const loginSchema = z.object({
   email: z.string({ required_error: "Email is required" }).email(),
@@ -84,6 +85,7 @@ export default function Login() {
   return (
     <Container component="main" maxWidth="xs">
       <Toaster />
+      <MySnackBar messgae="Disclaimer: You are using FREE version. All your notes will be deleted after 15 days of the creation. Thanks🙏🏻" />
       <ActionButtons />
       <Box
         sx={{
